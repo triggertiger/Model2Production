@@ -44,7 +44,7 @@ MODEL_METRICS = {
 # training parameters
 TRAIN_PARAMS = {
 'patience': 10,
-'epochs' : 100,
+'epochs' : 2,
 'batch_size': 2048,
 
 }
