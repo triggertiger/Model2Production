@@ -1,0 +1,13 @@
+.env
+
+# model data:
+mlruns/*
+
+# data
+*.csv
+data/*
+.DS_Store
+notebooks/mlruns/*
+
+# experimental notebooks
+app.ipynb
