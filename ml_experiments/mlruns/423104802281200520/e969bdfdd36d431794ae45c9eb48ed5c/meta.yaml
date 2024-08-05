@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/e969bdfdd36d431794ae45c9eb48ed5c/artifacts
+deleted_time: 1722201053687
+end_time: 1722199512911
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: e969bdfdd36d431794ae45c9eb48ed5c
+run_name: larger_layer_take2
+run_uuid: e969bdfdd36d431794ae45c9eb48ed5c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1722199408971
+status: 4
+tags: []
+user_id: inbalshalev

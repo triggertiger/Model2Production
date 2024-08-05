@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/7511f655f02a4a4eb095af88304c2929/artifacts
+deleted_time: 1716818309844
+end_time: 1715364212821
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 7511f655f02a4a4eb095af88304c2929
+run_name: delicate-midge-860
+run_uuid: 7511f655f02a4a4eb095af88304c2929
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715363760795
+status: 4
+tags: []
+user_id: unknown

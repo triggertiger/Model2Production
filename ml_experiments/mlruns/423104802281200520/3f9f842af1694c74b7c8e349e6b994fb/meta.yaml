@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/3f9f842af1694c74b7c8e349e6b994fb/artifacts
+deleted_time: 1717398326479
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 3f9f842af1694c74b7c8e349e6b994fb
+run_name: placid-eel-341
+run_uuid: 3f9f842af1694c74b7c8e349e6b994fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717162458607
+status: 1
+tags: []
+user_id: unknown

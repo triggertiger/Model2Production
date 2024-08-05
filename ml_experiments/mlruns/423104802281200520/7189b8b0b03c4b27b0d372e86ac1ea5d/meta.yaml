@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/7189b8b0b03c4b27b0d372e86ac1ea5d/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: active
+run_id: 7189b8b0b03c4b27b0d372e86ac1ea5d
+run_name: blushing-hen-279
+run_uuid: 7189b8b0b03c4b27b0d372e86ac1ea5d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1722265109982
+status: 1
+tags: []
+user_id: unknown

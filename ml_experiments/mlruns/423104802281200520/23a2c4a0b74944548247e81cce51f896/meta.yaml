@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/23a2c4a0b74944548247e81cce51f896/artifacts
+deleted_time: 1717162255974
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 23a2c4a0b74944548247e81cce51f896
+run_name: persistent-ram-906
+run_uuid: 23a2c4a0b74944548247e81cce51f896
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717148314832
+status: 1
+tags: []
+user_id: unknown

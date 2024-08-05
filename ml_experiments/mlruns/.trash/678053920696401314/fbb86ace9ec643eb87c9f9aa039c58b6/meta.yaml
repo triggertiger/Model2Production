@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/fbb86ace9ec643eb87c9f9aa039c58b6/artifacts
+deleted_time: 1716818309844
+end_time: null
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: fbb86ace9ec643eb87c9f9aa039c58b6
+run_name: tasteful-jay-594
+run_uuid: fbb86ace9ec643eb87c9f9aa039c58b6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716735351895
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/0a466e2c66334620bd4d69fa0ec66219/artifacts
+deleted_time: 1716818309844
+end_time: null
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 0a466e2c66334620bd4d69fa0ec66219
+run_name: wise-goat-572
+run_uuid: 0a466e2c66334620bd4d69fa0ec66219
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715368486185
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/a356f264f6ec4fc0a7c3042dd6c7b39a/artifacts
+deleted_time: 1716818309844
+end_time: 1715353370329
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: a356f264f6ec4fc0a7c3042dd6c7b39a
+run_name: honorable-perch-679
+run_uuid: a356f264f6ec4fc0a7c3042dd6c7b39a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715353370199
+status: 4
+tags: []
+user_id: unknown

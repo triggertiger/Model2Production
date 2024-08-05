@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/9665ef9a5e6048af9a16780d01e7bcf8/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: active
+run_id: 9665ef9a5e6048af9a16780d01e7bcf8
+run_name: stately-frog-905
+run_uuid: 9665ef9a5e6048af9a16780d01e7bcf8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1722241704810
+status: 1
+tags: []
+user_id: unknown

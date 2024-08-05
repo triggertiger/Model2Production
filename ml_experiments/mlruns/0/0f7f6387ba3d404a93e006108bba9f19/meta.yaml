@@ -1,0 +1,16 @@
+artifact_uri: /Users/inbalshalev/Documents/tests/mlruns/0/0f7f6387ba3d404a93e006108bba9f19/artifacts
+deleted_time: 1715278537361
+end_time: 1714925203524
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 0f7f6387ba3d404a93e006108bba9f19
+run_name: zero_bias
+run_uuid: 0f7f6387ba3d404a93e006108bba9f19
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714925203487
+status: 4
+tags: []
+user_id: inbalshalev

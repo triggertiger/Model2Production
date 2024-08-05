@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/6e1ffc3677ba4b56990b4be7d6a54018/artifacts
+deleted_time: 1716818309844
+end_time: 1715345630892
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 6e1ffc3677ba4b56990b4be7d6a54018
+run_name: industrious-fox-607
+run_uuid: 6e1ffc3677ba4b56990b4be7d6a54018
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715345630789
+status: 4
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/77be096848c847c4b36c3ecf35743f78/artifacts
+deleted_time: 1716818309844
+end_time: 1715290478524
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 77be096848c847c4b36c3ecf35743f78
+run_name: popular-crab-19
+run_uuid: 77be096848c847c4b36c3ecf35743f78
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715290439172
+status: 4
+tags: []
+user_id: unknown

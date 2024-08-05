@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/b10add9b847c4f1eb7d7cc2c6500c6db/artifacts
+deleted_time: 1717144214021
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: b10add9b847c4f1eb7d7cc2c6500c6db
+run_name: sneaky-turtle-940
+run_uuid: b10add9b847c4f1eb7d7cc2c6500c6db
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716821050635
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/a174b70b1aa54949a3a3b2c5b15e022c/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: active
+run_id: a174b70b1aa54949a3a3b2c5b15e022c
+run_name: unequaled-snipe-835
+run_uuid: a174b70b1aa54949a3a3b2c5b15e022c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1722266682520
+status: 1
+tags: []
+user_id: unknown

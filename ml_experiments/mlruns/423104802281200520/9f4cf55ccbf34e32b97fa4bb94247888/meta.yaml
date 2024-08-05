@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/9f4cf55ccbf34e32b97fa4bb94247888/artifacts
+deleted_time: 1717144214013
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 9f4cf55ccbf34e32b97fa4bb94247888
+run_name: placid-asp-888
+run_uuid: 9f4cf55ccbf34e32b97fa4bb94247888
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716839855304
+status: 1
+tags: []
+user_id: unknown

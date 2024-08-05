@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/56c46d4ebb8e42c99bc04e29b5aacd6c/artifacts
+deleted_time: 1717162255968
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 56c46d4ebb8e42c99bc04e29b5aacd6c
+run_name: skittish-kite-429
+run_uuid: 56c46d4ebb8e42c99bc04e29b5aacd6c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717156175899
+status: 1
+tags: []
+user_id: unknown

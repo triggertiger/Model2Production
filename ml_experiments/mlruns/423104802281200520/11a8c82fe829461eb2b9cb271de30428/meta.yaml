@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/11a8c82fe829461eb2b9cb271de30428/artifacts
+deleted_time: 1717162255988
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 11a8c82fe829461eb2b9cb271de30428
+run_name: classy-dolphin-750
+run_uuid: 11a8c82fe829461eb2b9cb271de30428
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717144399374
+status: 1
+tags: []
+user_id: unknown

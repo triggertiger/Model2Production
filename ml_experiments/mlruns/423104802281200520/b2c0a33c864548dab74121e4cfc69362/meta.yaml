@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/b2c0a33c864548dab74121e4cfc69362/artifacts
+deleted_time: 1717398326468
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: b2c0a33c864548dab74121e4cfc69362
+run_name: upset-snake-338
+run_uuid: b2c0a33c864548dab74121e4cfc69362
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717163254711
+status: 1
+tags: []
+user_id: unknown

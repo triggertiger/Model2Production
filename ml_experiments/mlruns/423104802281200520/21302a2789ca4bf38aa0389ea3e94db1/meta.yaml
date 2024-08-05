@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/21302a2789ca4bf38aa0389ea3e94db1/artifacts
+deleted_time: 1717398326441
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 21302a2789ca4bf38aa0389ea3e94db1
+run_name: fearless-ram-485
+run_uuid: 21302a2789ca4bf38aa0389ea3e94db1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717183010483
+status: 1
+tags: []
+user_id: unknown

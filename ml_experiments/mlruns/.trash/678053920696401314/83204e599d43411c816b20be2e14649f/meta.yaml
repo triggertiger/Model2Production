@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/83204e599d43411c816b20be2e14649f/artifacts
+deleted_time: 1716818309844
+end_time: 1715363453191
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 83204e599d43411c816b20be2e14649f
+run_name: nebulous-trout-454
+run_uuid: 83204e599d43411c816b20be2e14649f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715363453125
+status: 4
+tags: []
+user_id: unknown

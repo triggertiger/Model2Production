@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/69a8ca0aa7ce45b2922256cef1048ab3/artifacts
+deleted_time: 1717398899541
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 69a8ca0aa7ce45b2922256cef1048ab3
+run_name: able-slug-499
+run_uuid: 69a8ca0aa7ce45b2922256cef1048ab3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717398236494
+status: 1
+tags: []
+user_id: unknown

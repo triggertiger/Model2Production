@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/5472f17ae9be42dcb34585648227cfe6/artifacts
+deleted_time: 1717398326456
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 5472f17ae9be42dcb34585648227cfe6
+run_name: burly-conch-588
+run_uuid: 5472f17ae9be42dcb34585648227cfe6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717172111848
+status: 1
+tags: []
+user_id: unknown

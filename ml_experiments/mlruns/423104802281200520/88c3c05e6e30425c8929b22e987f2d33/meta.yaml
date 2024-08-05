@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/88c3c05e6e30425c8929b22e987f2d33/artifacts
+deleted_time: 1722201053680
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 88c3c05e6e30425c8929b22e987f2d33
+run_name: adventurous-koi-894
+run_uuid: 88c3c05e6e30425c8929b22e987f2d33
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1722168302109
+status: 1
+tags: []
+user_id: unknown

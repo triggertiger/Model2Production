@@ -1,0 +1,8 @@
+artifact_location: /Users/inbalshalev/Documents/tests/mlruns/876816283784381079
+creation_time: 1714639446674
+experiment_id: '876816283784381079'
+last_update_time: 1715278726990
+lifecycle_stage: deleted
+name: baseline
+tags:
+  baseline: fraud_analysis

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/6ea059c59a094b60a3d45c8876c20fe0/artifacts
+deleted_time: 1716818309844
+end_time: null
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 6ea059c59a094b60a3d45c8876c20fe0
+run_name: magnificent-rat-119
+run_uuid: 6ea059c59a094b60a3d45c8876c20fe0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1716718439063
+status: 1
+tags: []
+user_id: unknown

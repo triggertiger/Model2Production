@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/03fc33c1d2b4493e8507d2bbc125e89d/artifacts
+deleted_time: 1717398326436
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 03fc33c1d2b4493e8507d2bbc125e89d
+run_name: puzzled-fowl-634
+run_uuid: 03fc33c1d2b4493e8507d2bbc125e89d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717183309222
+status: 1
+tags: []
+user_id: unknown

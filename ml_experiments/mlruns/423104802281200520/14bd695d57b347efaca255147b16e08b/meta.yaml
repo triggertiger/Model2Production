@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/14bd695d57b347efaca255147b16e08b/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: active
+run_id: 14bd695d57b347efaca255147b16e08b
+run_name: resilient-colt-636
+run_uuid: 14bd695d57b347efaca255147b16e08b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717398897653
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/922a47aab673449f9f64a30a881a2d58/artifacts
+deleted_time: 1717398326454
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 922a47aab673449f9f64a30a881a2d58
+run_name: likeable-conch-942
+run_uuid: 922a47aab673449f9f64a30a881a2d58
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717172575800
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/c73ea59f2a9b42138336354ee2e19def/artifacts
+deleted_time: 1717398326443
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: c73ea59f2a9b42138336354ee2e19def
+run_name: intrigued-fox-653
+run_uuid: c73ea59f2a9b42138336354ee2e19def
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717180372608
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/bb93980905fc4df795b8743c8cf6c347/artifacts
+deleted_time: 1716818309844
+end_time: 1715352988283
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: bb93980905fc4df795b8743c8cf6c347
+run_name: powerful-sow-54
+run_uuid: bb93980905fc4df795b8743c8cf6c347
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715352988226
+status: 4
+tags: []
+user_id: unknown

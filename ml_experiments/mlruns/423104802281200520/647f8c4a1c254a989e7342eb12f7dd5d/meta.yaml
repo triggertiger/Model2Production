@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/fraud_analysis/mlruns/423104802281200520/647f8c4a1c254a989e7342eb12f7dd5d/artifacts
+deleted_time: 1722201053668
+end_time: null
+entry_point_name: ''
+experiment_id: '423104802281200520'
+lifecycle_stage: deleted
+run_id: 647f8c4a1c254a989e7342eb12f7dd5d
+run_name: amusing-carp-923
+run_uuid: 647f8c4a1c254a989e7342eb12f7dd5d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1722031332324
+status: 1
+tags: []
+user_id: unknown

@@ -1,0 +1,16 @@
+artifact_uri: file:///Users/inbalshalev/Documents/tests/mlruns/678053920696401314/8073eeb9d5bf4a1ab3f04662460f672c/artifacts
+deleted_time: 1716818309844
+end_time: 1715342160306
+entry_point_name: ''
+experiment_id: '678053920696401314'
+lifecycle_stage: deleted
+run_id: 8073eeb9d5bf4a1ab3f04662460f672c
+run_name: flawless-wasp-814
+run_uuid: 8073eeb9d5bf4a1ab3f04662460f672c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1715342160228
+status: 4
+tags: []
+user_id: unknown
