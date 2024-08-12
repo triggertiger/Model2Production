@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}login page{% endblock %}
+{% block content %}
+<h1>hello {{username}}! you are now logged in</h1>
+
+    <p>Your last review was to month: {{ last_train_date }}</p>
+    <form action="/predict_next" method="POST">
+        <p><input type="submit" value="Show next"/></p>
+
+    </form>
+    
+
+<a href="{{ url_for('logout') }}">press here to log out</a>
+
+{% endblock %}
+

@@ -2,11 +2,12 @@ import pandas as pd
 from sqlalchemy import create_engine, MetaData, update, Table, select, Integer
 from sqlalchemy.orm import Session
 import os
+from datetime import datetime
 
 
 # get data from sql database: 
 class TrainDatesHandler:
-    def __init__(self, username = "Pinkey", DATABASE = 'DATABASE_FULL_PATH'):
+    def __init__(self, date=None, username="Pinkey", DATABASE = 'DATABASE_FULL_PATH'):
 
 # data engine:
         self.database = os.getenv(DATABASE)
@@ -15,6 +16,7 @@ class TrainDatesHandler:
         self.users_table = 'users'
         self.transactions_table = 'transactions'
         self.username = username
+        self.prediction_start_date = date
         
 
     @property 
@@ -61,14 +63,38 @@ class TrainDatesHandler:
         df = pd.read_sql(query, self.engine)
         df['time_stamp'] = pd.to_datetime(df['time_stamp'])
         df = df.loc[df['time_stamp'] < last_data_date]
-                
+
         return df
 
+    def get_prediction_data(self, datestring='2019-01-01'):
+        
+        if self.prediction_start_date:
+            if isinstance(self.prediction_start_date, datetime):
+                print('already datetime')
+                date = self.prediction_start_date
+            else: 
+                date = datetime.strptime(self.prediction_start_date, '%Y-%m-%d') 
+                    
+        else:
+            date = datetime.strptime(datestring, '%Y-%m-%d') 
+            
+        
+        year = date.year
+        month = date.month 
+
+        query = f'SELECT * FROM {self.transactions_table} WHERE year = {year} and month = {month};'        
+        df = pd.read_sql(query, self.engine)
+        return df
+    
 
 if __name__ == "__main__":
     user_data = TrainDatesHandler()
-    print(user_data.last_training_date)
-    print(user_data.last_train_date_index)
+    #print(user_data.last_training_date)
+    #print(user_data.last_train_date_index)
+    df = user_data.get_prediction_data()
+    print(df.head())
+    print(df.shape)
+
     #user_data.update_db_last_train_date()
 
         
