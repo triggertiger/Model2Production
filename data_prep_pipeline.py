@@ -184,12 +184,8 @@ def predict(model, data, threshold=0.5):
     results_df['is_fraud'] = labels
 
     return results_df
-
-    
-
-
-
-def main():
+  
+def pipeline():
     data = FraudDataProcessor()
     data.x_y_generator()
 
@@ -201,12 +197,8 @@ def main():
     new_trained_model = model_trainer(model, data, PARAMS, TRAIN_PARAMS)
     return predict(new_trained_model, data)
 
-
-    
-
-
 if __name__ == "__main__":
-    results = main()
+    results = pipeline()
     print(results.head(10))
     print(results.tail(10))
 
