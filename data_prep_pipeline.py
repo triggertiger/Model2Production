@@ -1,5 +1,5 @@
 import pandas as pd
-
+import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
 from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS
@@ -27,7 +27,6 @@ class FraudDataProcessor:
 
     # pipeline instances:
     label_enc = LabelEncoder()
-
     # replace missing values with a constant text, then encode to numeric classes and scale
     state_pipe = Pipeline(
         steps=[
@@ -36,7 +35,6 @@ class FraudDataProcessor:
             ("scaler", StandardScaler()),
         ]
     )
-
     # replace missing values with zero, then encode and scale
     zero_pipe = Pipeline(
         steps=[
@@ -45,7 +43,6 @@ class FraudDataProcessor:
             ("scaler", StandardScaler())
         ]
     )
-
     # implement number scaler on numerical features (no missing values)
     # implement text replacement to state and errors
     # implement zero replacement to zip, city and chip
@@ -59,29 +56,28 @@ class FraudDataProcessor:
         verbose_feature_names_out=False,
     )
 
-    def __init__ (self):
+    def __init__ (self, date=None):
         # load data from sql db
         self.sql_handler = TrainDatesHandler()
-        self.df = self.sql_handler.get_transactions_to_date()
+        self.retrain_df = self.sql_handler.get_retraining_data()
+        self.predict_df = self.sql_handler.get_prediction_data()
         
-        # save the date of last training, for splitting the data (last month is for prediction):
-        self.last_training_date = self.sql_handler.last_training_date
-        self.train_df = self.df.loc[self.df['time_stamp'] < self.last_training_date]#
-        self.train_df.drop(columns=['id', 'time_stamp'], inplace=True)
-        
-        self.pred_df = self.df.loc[self.df['time_stamp'] >= self.last_training_date]
-        self.pred_df.drop(columns=['id', 'time_stamp', 'is_fraud'], inplace=True) 
+        ## save the date of last training, for splitting the data (last month is for prediction):
+        #self.last_training_date = self.sql_handler.date_new_training
+        #self.train_df = self.retrain_df.loc[self.retrain_df['time_stamp'] < self.last_training_date]#
+        self.retrain_df.drop(columns=['id', 'time_stamp'], inplace=True)
         
         # save  a df of prediction dataset that will be presented to user
-        self.present_df = self.df.loc[self.df['time_stamp'] >= self.last_training_date]
-        self.present_df.drop(columns=['time_stamp', 'is_fraud'], inplace=True) 
-        
+        self.present_df = self.predict_df.drop(columns=['time_stamp', 'is_fraud'])
+        self.predict_df.drop(columns=['id', 'time_stamp', 'is_fraud'], inplace=True) 
+                
     def x_y_generator(self):
         """ passes the training dataframe through pipeline to fit to the model:
         split to x, y, normalize data, label y and set bias."""
 
         # shuffle the data: 
-        self.train_df = self.train_df.sample(frac = 1)
+        self.train_df = self.retrain_df.sample(frac = 1)
+
         # split to x, y
         xtrain = self.train_df.drop(columns=['is_fraud'])  
         ytrain = self.train_df[['is_fraud']]
@@ -90,22 +86,16 @@ class FraudDataProcessor:
         self.transformer.fit(xtrain)
         xtrain = self.transformer.transform(xtrain)
         ytrain = self.label_enc.fit_transform(ytrain)
-        self.xpred = self.transformer.transform(self.pred_df)
+        self.xpred = self.transformer.transform(self.predict_df)
 
         # set output bias
-        neg, pos = np.bincount(self.label_enc.transform(self.df['is_fraud']))
+        neg, pos = np.bincount(self.label_enc.transform(self.retrain_df['is_fraud']))
         self.output_bias = np.log([pos / neg])
 
         #reshape labels tensor for tensorflow:
         logging.info(f'reshape ytrain to: {ytrain.shape}')
         ytrain = ytrain.reshape(ytrain.shape[0], 1)
         self.train_ds = tf.data.Dataset.from_tensor_slices((xtrain, ytrain))
-        
-        
-    # @property
-    # def output_bias(self):
-    # # update output bias:
-    #     return self.output_bias
     
 def update_params_output_bias(params, data: FraudDataProcessor):
     """update the output bias in the external params, 
@@ -178,14 +168,12 @@ def predict(model, data, threshold=0.5):
     """gets model predictions and returns in a df in a human readable format"""
     predictions = model.predict(data.xpred)
     labels = predictions >= threshold
-    logging.info(f'labels{labels.shape}')
     results_df = data.present_df
-    logging.info(f'results info: {results_df.info}')
     results_df['is_fraud'] = labels
-
+    
     return results_df
   
-def pipeline():
+def train_pipeline():
     data = FraudDataProcessor()
     data.x_y_generator()
 
@@ -197,9 +185,24 @@ def pipeline():
     new_trained_model = model_trainer(model, data, PARAMS, TRAIN_PARAMS)
     return predict(new_trained_model, data)
 
-if __name__ == "__main__":
-    results = pipeline()
-    print(results.head(10))
-    print(results.tail(10))
+def predict_pipeline(date= '2019-01-01'):
+    data = FraudDataProcessor(date=date)
+    data.x_y_generator()
+    model = load_saved_model()
+    print(model.summary())
+    return predict(model, data)
 
+    data.x_y_generator()
+if __name__ == "__main__":
+    start = time.time()
+    results = predict_pipeline()
+    frauds = results[results['is_fraud']]
+    #frauds = results.loc[results['is_fraud'] == True]
+    print(frauds.head(10))
+    print(frauds.shape)
+    logging.info(f'elapsed time {time.time() - start}')
+    if frauds.shape[0] == 0:
+        print('hurray! no fraud this month, you can go home')
+
+    print(results.dtypes)
 

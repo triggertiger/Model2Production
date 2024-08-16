@@ -2,7 +2,7 @@ from flask import Flask, request, flash, jsonify, redirect, url_for, render_temp
 from flask_marshmallow import Marshmallow
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from flask_restful import Resource, Api, fields, reqparse
-from data_prep_pipeline import predict
+from data_prep_pipeline import predict_pipeline
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -17,6 +17,7 @@ from datetime import datetime
 import json
 import pandas as pd
 from utils.sql_data_queries import TrainDatesHandler
+from dash import Dash, html, dash_table, dcc, callback, Input, Output
 
 
 
@@ -61,69 +62,6 @@ class Users(db.Model, UserMixin):
     password_hash = db.Column(db.String(64), nullable=False)
     last_training_date = db.Column(db.Integer)
 
-# 4. add resources for api
-# payload = api.model('Payload', {
-#     'username': fields.Integer(required=True),
-#     'date': fields.String(required=True)
-# })
-
-# parser = reqparse.RequestParser()
-# parser.add_argument('username')
-# parser.add_argument('date')
-# predictions_info = {
-#     'username': current_user.name,
-#     'date': session['dt']
-# }
-
-# class GetPrediction(Resource):
-#     def post(self):
-#         args = parser.parse_args()
-
-#         data_req = {'username': args['username'],
-#                     'date': args['date']}
-        
-
-        # data_handler = TrainDatesHandler(username=current_user.name, date=date)
-        # transactions_df = data_handler.get_prediction_data()[:100]
-        # print(transactions_df.shape)
-        # print(transactions_df.head())
-
-#         return jsonify(data_req)
-    
-#     def post(self):
-#         data = request.get_json()
-
-# api.add_resource(GetPrediction, '/get_dataframe')
-
-class PrepareData(Resource):
-    pass
-
-class PredictData(Resource):
-    pass
-
-
-
-
-# class UserSchema(SQLAlchemyAutoSchema):
-#     class Meta:
-#         model = Users
-#         load_instance = True
-#         fields = ("id", "name", "last_training_date")
-
-# class TransactionSchema(SQLAlchemyAutoSchema):
-#     class Meta:
-#         model = Users
-#         load_instance = True
-#         fields = ("id", "name", "last_training_date")
-#     class Meta:
-#         model = Users
-#         load_instance = True
-#         fields = ("id", "name", "last_training_date")
-#         #exclude = ("password_hash",)
-
-# #user_schema = UserSchema()
-# users_schema = UserSchema(many=True)
-    
 ReflectedBase = automap_base()
 ReflectedBase.prepare(autoload_with=db.engine)
 Transactions = ReflectedBase.classes.transactions
@@ -181,24 +119,37 @@ def userpage():
 
 
 
+dash_app = Dash(__name__, server=app, url_base_pathname='/predict_next/')
+
+def predict_next(session=session):
+    date = session['last_train_date']
+    results = predict_pipeline(date=date)
+    frauds = results[results['is_fraud']]
+    return frauds
+
 @app.route("/predict_next", methods=["POST", "GET"])
 @login_required
-def predict_next():
-    date = session['last_train_date']
-    year = session['predict_year']
-    prediction_data = TrainDatesHandler(date=date)
-    df = prediction_data.get_prediction_data()[:1000]
-    
-    print(df.head())
+def serve_dash_table():
+    frauds_df = predict_next()
+    print('starting prediction')
+    dash_app.layout = [
+        html.Div([
+            html.H1(
+                children=f'Suspicious Transactions for the period: {session["predict_month"]}/{session["predict_year"]}',
+                
+                style={'textAlign': 'center'}
+            ),
+            html.Br(),
+        ]),
+        html.Div([
+            html.Div(children=[dash_table.DataTable(
+                data = frauds_df.to_dict('records')
+            )])
+        ])
+    ]
 
-    # statement = db.select(Transactions).filter_by(year=year, month=month)
-    # user = db.session.query(Users).filter_by(id=1).all()
-    # user_json = users_schema.dump(user)
-    # print('type: ', type(user_json))
-    # return jsonify(user_json)
-    
-    
-    return jsonify(df.to_dict())
+        
+    return dash_app.index()
 
 
     
@@ -206,15 +157,7 @@ def predict_next():
 # hashing existing password:
 @app.route('/test')
 def test():
-    pinkey_hashed_password = bcrypt.generate_password_hash("WhatDoWeDoTonight")
-    brain_hashed_password = bcrypt.generate_password_hash("TakeOverTheWorld")
-
-    pinkey = db.session.query(Users).filter_by(name='Pinkey').first()
-    pinkey.password_hash = pinkey_hashed_password
-    brain = db.session.query(Users).filter_by(name='Brain').first()
-    brain.password_hash = brain_hashed_password
-    db.session.commit()
-
-    return ' changes made'
+    
+    return ' hello world'
 if __name__ =="__main__":
     app.run(debug=True)
