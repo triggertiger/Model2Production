@@ -12,6 +12,7 @@ from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.metrics import ConfusionMatrixDisplay
 
 import tensorflow as tf
 from tensorflow import keras
@@ -27,7 +28,11 @@ mlflow.set_tracking_uri(uri=MLFLOW_URI)
 logging.info(f' tracking uri: {mlflow.get_tracking_uri()}')
 
 class FraudDataProcessor:
-    """processes transactions data as datafram from the sql engine to a dataframe
+    """
+    Receives: dataframe with data from the sql. sql handler provides one df for training
+    from beginning (1/1/17) until the stated date, and one prediction dataset for one month
+    after the date. (for example: training < 1.1.19; prediction = JAN 2019)
+    processes transactions data as datafram from the sql engine to a dataframe
     handles the data pre-processing for training, retraining and predictions"""
 
     # pipeline instances:
@@ -48,7 +53,7 @@ class FraudDataProcessor:
             ("scaler", StandardScaler())
         ]
     )
-    # implement number scaler on numerical features (no missing values)
+    # implement number scaler on numerical features (no missing values on EDA)
     # implement text replacement to state and errors
     # implement zero replacement to zip, city and chip
     transformer = ColumnTransformer(
@@ -66,7 +71,7 @@ class FraudDataProcessor:
         self.sql_handler = TrainDatesHandler()
         self.retrain_df = self.sql_handler.get_retraining_data()
         self.predict_df = self.sql_handler.get_prediction_data()
-        
+        self.ypred = self.predict_df['is_fraud']
         ## save the date of last training, for splitting the data (last month is for prediction):
         #self.last_training_date = self.sql_handler.date_new_training
         #self.train_df = self.retrain_df.loc[self.retrain_df['time_stamp'] < self.last_training_date]#
@@ -91,7 +96,10 @@ class FraudDataProcessor:
         self.transformer.fit(xtrain)
         xtrain = self.transformer.transform(xtrain)
         ytrain = self.label_enc.fit_transform(ytrain)
+        
         self.xpred = self.transformer.transform(self.predict_df)
+        # for retraining evaluation purposes:
+        ytest = self.label_enc.fit_transform(self.ypred)
 
         # set output bias
         neg, pos = np.bincount(self.label_enc.transform(self.retrain_df['is_fraud']))
@@ -100,7 +108,10 @@ class FraudDataProcessor:
         #reshape labels tensor for tensorflow:
         logging.info(f'reshape ytrain to: {ytrain.shape}')
         ytrain = ytrain.reshape(ytrain.shape[0], 1)
+        ytest = ytest.reshape(ytest.shape[0], 1)
+
         self.train_ds = tf.data.Dataset.from_tensor_slices((xtrain, ytrain))
+        self.test_ds = tf.data.Dataset.from_tensor_slices((self.xpred, ytest))
     
 def update_params_output_bias(params, data: FraudDataProcessor):
     """update the output bias in the external params, 
@@ -142,44 +153,59 @@ def load_model_weights(model, train_params):
     model.load_weights(initial_weights)
     return model
 
-def model_trainer(model, data, params, train_params, output_bias_generator=True, callback=None):
+def model_re_trainer(model, data, params, train_params, output_bias_generator=True, callback=None):
     """ loads the model architecture for new training, with the new
     data for the relvant period"""
-    if output_bias_generator:
-        output_bias = tf.keras.initializers.Constant(params['output_bias']) 
     
-    early_stopping = tf.keras.callbacks.EarlyStopping(
-        monitor='val_prc',
-        verbose=0,
-        patience=train_params['patience'],
-        mode='max',
-        restore_best_weights=True
-    )
+    with mlflow.start_run() as run:    
+        if output_bias_generator:
+            output_bias = tf.keras.initializers.Constant(params['output_bias']) 
+        
+        tags = {k: v for k, v in params.items()}
+        mlflow.tensorflow.autolog(registered_model_name='fraud_analysis')
+        mlflow.log_params(params)
+        mlflow.log_params(train_params)
+        mlflow.set_tags(tags)
 
-    callback_list = [early_stopping]
+        early_stopping = tf.keras.callbacks.EarlyStopping(
+            monitor='val_prc',
+            verbose=0,
+            patience=train_params['patience'],
+            mode='max',
+            restore_best_weights=True
+        )
 
-    # add Tensorboard for checking, but there is no validation 
-    if callback:
-        callback_list.append(callback)
-    
-    if params['output_bias'] is None:
-        model.layers[-1].bias.assign([0.0])
-    
-    train_ds = data.train_ds.batch(train_params['batch_size']).prefetch(2)
+        callback_list = [early_stopping]
 
-    model.fit(
-        train_ds,
-        batch_size=train_params['batch_size'],
-        epochs=train_params['epochs'],
-        callbacks=callback_list
-    )
-    # save the new model as the latest version
-    if not os.path.exists('saved_model'): 
-        os.mkdir('saved_model')
-    version = str(len(os.listdir('saved_model')) +1)
-    os.mkdir(f'saved_model/{version}')
-    model.save(f"saved_model/{version}/mymodel.keras")
-    return model
+        # placeholder for Tensorboard if needed. no validation dataset in re-training
+        if callback:
+            callback_list.append(callback)
+        
+        if params['output_bias'] is None:
+            model.layers[-1].bias.assign([0.0])
+        
+        train_ds = data.train_ds.batch(train_params['batch_size']).prefetch(2)
+        test_ds = data.test_ds.batch(train_params['batch_size']).prefetch(1)
+
+        model.fit(
+            train_ds,
+            batch_size=train_params['batch_size'],
+            epochs=train_params['epochs'],
+            callbacks=callback_list
+        )
+        print(model.summary())
+
+        eval_results = model.evaluate(test_ds)
+        for name, value in zip(model.metrics_names, eval_results):
+            print(name, ': ', value)
+
+        predictions = model.predict(data.xpred)
+        cm = ConfusionMatrixDisplay.from_predictions(
+            np.concatenate([y for x, y in test_ds], axis=0), predictions > 0.2
+        )
+        mlflow.log_figure(cm.figure_, 'test_confusion_matrix.png')
+       
+    return eval_results 
 
 def predict(model, data, threshold=0.5):
     """gets model predictions and returns in a df in a human readable format"""
@@ -192,37 +218,45 @@ def predict(model, data, threshold=0.5):
     
     return results_df
   
-def train_pipeline():
-    data = FraudDataProcessor()
+def re_train_pipeline(date= '2019-01-01', model_version='latest'):
+    data = FraudDataProcessor(date=date)
     data.x_y_generator()
 
     update_params_output_bias(PARAMS, data)
     model = load_saved_model()
-    print(model.summary())
-
     model = load_model_weights(model, PARAMS)
-    new_trained_model = model_trainer(model, data, PARAMS, TRAIN_PARAMS)
-    return predict(new_trained_model, data)
+    #new_trained_model = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
+    eval_resutls = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
+    #return predict(new_trained_model, data)
+    return eval_resutls
 
 def predict_pipeline(date= '2019-01-01', model_version='latest'):
+    logging.info('loading sql data')
+    start = time.time()
     data = FraudDataProcessor(date=date)
     data.x_y_generator()
+    logging.info(f'sql loading & preprocessing time: {time.time()-start}')
     logging.info('loading model')
     model = load_saved_model()
     print(model.summary())
     return predict(model, data)
 
-    data.x_y_generator()
-if __name__ == "__main__":
-    start = time.time()
-    results = predict_pipeline()
-    end = time.time()
-    frauds = results[results['is_fraud']]
-    print(frauds.head(10))
-    print(frauds.shape)
-    logging.info(f'total elapsed time {time.time() - start}')
-    if frauds.shape[0] == 0:
-        print('hurray! no fraud this month, you can go home')
+    #data.x_y_generator()
 
-    print(results.dtypes)
+if __name__ == "__main__":
+# test predict pipeline
+    # start = time.time()
+    # results = predict_pipeline()
+    # frauds = results[results['is_fraud']]
+    # print(frauds.head(10))
+    # print(frauds.shape)
+    # logging.info(f'total elapsed time {time.time() - start}')
+    # if frauds.shape[0] == 0:
+    #     print('hurray! no fraud this month, you can go home')
+
+# test retrain pipeline
+    start = time.time()
+    eval_resutls = re_train_pipeline()
+    print(eval_resutls)
+    logging.info(f'total elapsed time {time.time() - start}')
 

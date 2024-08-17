@@ -283,13 +283,14 @@ def mlflow_run(name, params, train_params, metricas, data, run_name=None):
         for name, value in zip(model.metrics_names, results):
             print(name, ': ', value)
         
+        
         logging.info(f'prediction scores:\n\n {predictions}')
         mlflow.tensorflow.log_model(model, "models")
-        if not os.path.exists('saved_model'): 
-            os.mkdir('saved_model')
-        version = str(len(os.listdir('saved_model')) +1)
-        os.mkdir(f'saved_model/{version}')
-        model.save(f"saved_model/{version}/mymodel.keras")
+        # if not os.path.exists('saved_model'): 
+        #     os.mkdir('saved_model')
+        # version = str(len(os.listdir('saved_model')) +1)
+        # os.mkdir(f'saved_model/{version}')
+        # model.save(f"saved_model/{version}/mymodel.keras")
         #mlflow.keras.save_model(model, f"saved_model/{version}", save_exported_model=False, )
 
         cm = ConfusionMatrixDisplay.from_predictions(
@@ -319,20 +320,20 @@ if __name__ == "__main__":
     data.data_splitter()
     
     params['output_bias'] = data.initial_bias
-    #mlflow_run('fraud_detection', params=params, train_params=TRAIN_PARAMS, metricas=MODEL_METRICS, data=data, run_name='larger_layer_take2')
-    new_model = load_saved_model()
-    new_model.summary()
+    mlflow_run('fraud_detection', params=params, train_params=TRAIN_PARAMS, metricas=MODEL_METRICS, data=data, run_name='larger_layer_take2')
+    #new_model = load_saved_model()
+    #new_model.summary()
     
-    xpred = data.xpred
-    print(xpred.shape)
-    predictions = new_model.predict(xpred)
-    print(predictions)
-    labels = allocate_predictions(predictions)
-    logging.info(f'columns: {data.data.columns}')
-    print(labels)
-    results_df = pd.DataFrame(xpred[:10], columns= data.data.drop(columns=['is_fraud']).columns)
-    results_df['is_fraud'] = labels[:10]
-    print(results_df.head())
+    # xpred = data.xpred
+    # print(xpred.shape)
+    # predictions = new_model.predict(xpred)
+    # print(predictions)
+    # labels = allocate_predictions(predictions)
+    # logging.info(f'columns: {data.data.columns}')
+    # print(labels)
+    # results_df = pd.DataFrame(xpred[:10], columns= data.data.drop(columns=['is_fraud']).columns)
+    # results_df['is_fraud'] = labels[:10]
+    # print(results_df.head())
     #pred_transactions = reverse_transformer(data.transformer, data.xpred)
     #print(pred_transactions)
 
