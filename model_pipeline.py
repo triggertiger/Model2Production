@@ -7,7 +7,7 @@ import os
 import tempfile
 import datetime
 import logging
-from utils.config import DATA_PATH, ORIGINAL_CSV, PARAMS, MODEL_METRICS, TRAIN_PARAMS
+from utils.config import DATA_PATH, ORIGINAL_CSV, PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, StandardScaler
@@ -27,6 +27,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+mlflow.set_tracking_uri(uri=MLFLOW_URI)
 
 class FraudDataProcessor:
     # set pipeline instances:

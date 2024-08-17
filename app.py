@@ -113,6 +113,11 @@ def userpage():
     session['last_train_date'] = dt
     session['predict_month'] = dt.month
     session['predict_year'] = dt.year
+    
+    # the index number will be also the serial number of the version to be used for prediction
+    # this is in order to use the relevant model version for each user "progress" in time.
+    # if the mlflow model 'latest' version is smaller than this index, the model should not re-train 
+    session['model_version'] = last_date_index
 
 
     return render_template('userpage.html', username=username, last_train_date=datestring)
@@ -123,7 +128,8 @@ dash_app = Dash(__name__, server=app, url_base_pathname='/predict_next/')
 
 def predict_next(session=session):
     date = session['last_train_date']
-    results = predict_pipeline(date=date)
+    model_version = session['model_version']
+    results = predict_pipeline(date=date, model_version=model_version)
     frauds = results[results['is_fraud']]
     return frauds
 
@@ -160,4 +166,4 @@ def test():
     
     return ' hello world'
 if __name__ =="__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5001)
