@@ -2,7 +2,7 @@ import pandas as pd
 import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS
+from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI, RUN_ID
 import os
 import numpy as np
 import tempfile
@@ -15,12 +15,17 @@ from sklearn.pipeline import Pipeline
 
 import tensorflow as tf
 from tensorflow import keras
+import mlflow
 
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+# mlflow uri
+mlflow.set_tracking_uri(uri=MLFLOW_URI)
+logging.info(f' tracking uri: {mlflow.get_tracking_uri()}')
+
 class FraudDataProcessor:
     """processes transactions data as datafram from the sql engine to a dataframe
     handles the data pre-processing for training, retraining and predictions"""
@@ -104,9 +109,21 @@ def update_params_output_bias(params, data: FraudDataProcessor):
     params['output_bias'] == data.output_bias
     
 
-def load_saved_model(name="mymodel.keras"):
-    version = (len(os.listdir('saved_model')))
-    return tf.keras.models.load_model(f'saved_model/{version}/mymodel.keras')
+def load_saved_model(name="./mlruns/models/fraud_analysis/1", version='latest'):
+    # version = (len(os.listdir('saved_model')))
+    # return tf.keras.models.load_model(f'saved_model/{version}/mymodel.keras')
+    #try:
+    start = time.time()
+    model_uri = "models:/fraud_analysis/1"    
+    model = mlflow.keras.load_model(model_uri=model_uri)
+    logging.info(f'model loaded from: {model_uri}')
+#except KeyError:
+        # model_uri = 'runs:/f10dd34c228d4ced92c266a30a552afb/'
+        # model = mlflow.tensorflow.load_model(model_uri=model_uri)
+        # print(f'loaded from: {model_uri}')
+    # model = mlflow.pyfunc.load_model(f'models:/{name}/{version}')
+    logging.info(f'loading time: {time.time()-start}')
+    return model
 
 def load_model_weights(model, train_params):
     path = os.path.join(tempfile.mkdtemp(), 'initial_weights.weights.h5')
@@ -166,10 +183,12 @@ def model_trainer(model, data, params, train_params, output_bias_generator=True,
 
 def predict(model, data, threshold=0.5):
     """gets model predictions and returns in a df in a human readable format"""
+    start = time.time()
     predictions = model.predict(data.xpred)
     labels = predictions >= threshold
     results_df = data.present_df
     results_df['is_fraud'] = labels
+    logging.info(f'predicting time: {time.time() - start}')
     
     return results_df
   
@@ -185,9 +204,10 @@ def train_pipeline():
     new_trained_model = model_trainer(model, data, PARAMS, TRAIN_PARAMS)
     return predict(new_trained_model, data)
 
-def predict_pipeline(date= '2019-01-01'):
+def predict_pipeline(date= '2019-01-01', model_version='latest'):
     data = FraudDataProcessor(date=date)
     data.x_y_generator()
+    logging.info('loading model')
     model = load_saved_model()
     print(model.summary())
     return predict(model, data)
@@ -196,11 +216,11 @@ def predict_pipeline(date= '2019-01-01'):
 if __name__ == "__main__":
     start = time.time()
     results = predict_pipeline()
+    end = time.time()
     frauds = results[results['is_fraud']]
-    #frauds = results.loc[results['is_fraud'] == True]
     print(frauds.head(10))
     print(frauds.shape)
-    logging.info(f'elapsed time {time.time() - start}')
+    logging.info(f'total elapsed time {time.time() - start}')
     if frauds.shape[0] == 0:
         print('hurray! no fraud this month, you can go home')
 
