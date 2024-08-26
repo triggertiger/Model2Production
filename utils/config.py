@@ -11,6 +11,8 @@ ORIGINAL_CSV = "ibm_4y.csv"
 DATA_FILE = "clean_cc_data.csv"
 DATABASE = 'sqlite:///data/fraud_transactions.db'
 DATABASE_FULL_PATH = 'sqlite:////Users/inbalshalev/Documents/cloud_computing/data/fraud_transactions.db'
+MLFLOW_URI = 'http://127.0.0.1:5000'
+
 
 # model architecture paramseters:
 PARAMS = {
@@ -44,7 +46,7 @@ MODEL_METRICS = {
 # training parameters
 TRAIN_PARAMS = {
 'patience': 10,
-'epochs' : 2,
+'epochs' : 1,
 'batch_size': 2048,
 
 }

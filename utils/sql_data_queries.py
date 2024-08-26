@@ -29,22 +29,27 @@ class TrainDatesHandler:
         return pd.read_sql(query, self.engine)
    
     @property 
-    def date_new_training(self):
+    def date_for_new_training(self):
         """returns the newly updated date for retraining"""
         query = f'SELECT name, last_training_date FROM {self.users_table} WHERE name == "{self.username}"'
         users_df = pd.read_sql(query, self.engine)
         date = users_df['last_training_date'][0]
         return self.dates_df['train_date'][date]
-            
+
+    @property
+    def training_date_index(self):
+        """returns the index of the date at the user table for updating"""
+        query = f'SELECT name, last_training_date FROM {self.users_table} WHERE name == "{self.username}"'
+        users_df = pd.read_sql(query, self.engine)
+        return users_df['last_training_date'][0]
+        
     def update_db_last_train_date(self):
         """ updates the index of the training date in teh users
         table for the user. should be called before the retraining 
         function"""
         meta = MetaData()
 
-        # data to update: new dates_df index for the next date
-        new_training_index = self.date_index_at_user + 1
-        print(f'new_training_index: {new_training_index}')
+        new_training_index = self.training_date_index + 1
         
         users = Table('users', meta, autoload_with=self.engine)
         update_stmt = (
@@ -55,8 +60,8 @@ class TrainDatesHandler:
         with self.engine.connect() as conn:
             conn.execute(update_stmt)
             res = conn.execute(select_stmt).all()
-            print(res)
             conn.commit()
+        return res
     
     def get_all_data(self):
         query = f'SELECT * FROM {self.transactions_table};'
@@ -67,7 +72,7 @@ class TrainDatesHandler:
     def get_retraining_data(self):
         """gets the last trained data from the db through the class properties
         returns a df for training with data up to the following month"""
-        last_data_date = pd.Timestamp(self.date_new_training)# + pd.DateOffset(months=1)
+        last_data_date = pd.Timestamp(self.date_for_new_training)# + pd.DateOffset(months=1)
         datestring = last_data_date.strftime('%Y-%m-%d %H:%M:%S')
         
         query = f'SELECT * FROM {self.transactions_table} WHERE USER < "{datestring}";'
