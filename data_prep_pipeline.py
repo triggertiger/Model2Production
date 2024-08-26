@@ -1,8 +1,10 @@
 import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
 import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI, RUN_ID
+from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI
 import os
 import numpy as np
 import tempfile
@@ -12,11 +14,12 @@ from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 
 import tensorflow as tf
 from tensorflow import keras
 import mlflow
+
 
 
 # Configure logging
@@ -25,7 +28,8 @@ logging.basicConfig(
 )
 # mlflow uri
 mlflow.set_tracking_uri(uri=MLFLOW_URI)
-logging.info(f' tracking uri: {mlflow.get_tracking_uri()}')
+logging.info(f'data_prep: tracking uri: {mlflow.get_tracking_uri()}')
+
 
 class FraudDataProcessor:
     """
@@ -72,7 +76,8 @@ class FraudDataProcessor:
         self.retrain_df = self.sql_handler.get_retraining_data()
         self.predict_df = self.sql_handler.get_prediction_data()
         self.ypred = self.predict_df['is_fraud']
-        ## save the date of last training, for splitting the data (last month is for prediction):
+        
+        # save the date of last training, for splitting the data (last month is for prediction):
         #self.last_training_date = self.sql_handler.date_new_training
         #self.train_df = self.retrain_df.loc[self.retrain_df['time_stamp'] < self.last_training_date]#
         self.retrain_df.drop(columns=['id', 'time_stamp'], inplace=True)
@@ -120,12 +125,12 @@ def update_params_output_bias(params, data: FraudDataProcessor):
     params['output_bias'] == data.output_bias
     
 
-def load_saved_model(name="./mlruns/models/fraud_analysis/1", version='latest'):
+def load_saved_model(version='latest'):
     # version = (len(os.listdir('saved_model')))
     # return tf.keras.models.load_model(f'saved_model/{version}/mymodel.keras')
     #try:
     start = time.time()
-    model_uri = "models:/fraud_analysis/1"    
+    model_uri = f"models:/fraud_analysis/{version}"    
     model = mlflow.keras.load_model(model_uri=model_uri)
     logging.info(f'model loaded from: {model_uri}')
 #except KeyError:
@@ -200,11 +205,15 @@ def model_re_trainer(model, data, params, train_params, output_bias_generator=Tr
             print(name, ': ', value)
 
         predictions = model.predict(data.xpred)
-        cm = ConfusionMatrixDisplay.from_predictions(
+        
+        def get_confusion_matrix(test_ds=test_ds):
+            matplotlib.use('Agg')
+            cm = ConfusionMatrixDisplay.from_predictions(
             np.concatenate([y for x, y in test_ds], axis=0), predictions > 0.2
         )
-        mlflow.log_figure(cm.figure_, 'test_confusion_matrix.png')
-       
+            mlflow.log_figure(cm.figure_, 'test_confusion_matrix.png')
+            plt.close(cm.figure_)
+        get_confusion_matrix()
     return eval_results 
 
 def predict(model, data, threshold=0.5):
@@ -219,11 +228,12 @@ def predict(model, data, threshold=0.5):
     return results_df
   
 def re_train_pipeline(date= '2019-01-01', model_version='latest'):
+    
     data = FraudDataProcessor(date=date)
     data.x_y_generator()
 
     update_params_output_bias(PARAMS, data)
-    model = load_saved_model()
+    model = load_saved_model(version=model_version)
     model = load_model_weights(model, PARAMS)
     #new_trained_model = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
     eval_resutls = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
@@ -237,7 +247,7 @@ def predict_pipeline(date= '2019-01-01', model_version='latest'):
     data.x_y_generator()
     logging.info(f'sql loading & preprocessing time: {time.time()-start}')
     logging.info('loading model')
-    model = load_saved_model()
+    model = load_saved_model(version=model_version)
     print(model.summary())
     return predict(model, data)
 
