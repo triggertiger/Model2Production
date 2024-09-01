@@ -1,13 +1,9 @@
 from flask import Flask, request, flash, jsonify, redirect, url_for, render_template, session
 from flask_marshmallow import Marshmallow
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from flask_restful import Resource, Api, fields, reqparse
+from flask_restful import Api   #, Resource, fields, reqparse
 import data_prep_pipeline
 
-# from data_prep_pipeline import predict_pipeline
-# print('after first import')
-# from data_prep_pipeline import  re_train_pipeline
-# print('after second import')
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -22,7 +18,7 @@ from datetime import datetime
 import json
 import pandas as pd
 from utils.sql_data_queries import TrainDatesHandler
-from dash import Dash, html, dash_table, dcc, callback, Input, Output
+from dash import Dash, html, dash_table #, dcc, callback, Input, Output
 import mlflow
 from mlflow import cli
 import multiprocessing
@@ -51,7 +47,7 @@ class LoginForm(FlaskForm):
     username = StringField(
         validators=[InputRequired(), length(min=2, max=20)],
         render_kw={"placeholder": "username"})
-    password = StringField(
+    password = PasswordField(
         validators=[InputRequired(), length(min=2, max=20)],
         render_kw={"placeholder": "Password"})
     submit = SubmitField('Log In')
@@ -75,6 +71,7 @@ class Users(db.Model, UserMixin):
     password_hash = db.Column(db.String(64), nullable=False)
     last_training_date = db.Column(db.Integer)
 
+print(db.engine)
 # 3.1 setting auto-map for the rest of the db tables - 
 ReflectedBase = automap_base()
 ReflectedBase.prepare(autoload_with=db.engine)
@@ -195,8 +192,8 @@ def train_new_data(session=session):
     print(type(eval_results))
     return eval_results
 
-@app.route('/get_new_data', methods=['POST', 'GET'])
-def train_on_new_data():
+@app.route('/retrain', methods=['POST', 'GET'])
+def retrain():
     update_last_training_date_in_db()
     eval_results = train_new_data()
     # return f'{eval_results} '

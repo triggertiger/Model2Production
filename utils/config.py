@@ -8,9 +8,9 @@ load_dotenv()
 # Paths
 DATA_PATH = "data"
 ORIGINAL_CSV = "ibm_4y.csv"
-DATA_FILE = "clean_cc_data.csv"
+DATA_FILE = "clean_cc_data.csv" 
 DATABASE = 'sqlite:///data/fraud_transactions.db'
-DATABASE_FULL_PATH = 'sqlite:////Users/inbalshalev/Documents/cloud_computing/data/fraud_transactions.db'
+DATABASE_FULL_PATH = 'sqlite:////Users/inbalshalev/Documents/model_production/data/fraud_transactions.db'
 MLFLOW_URI = 'http://127.0.0.1:5000'
 
 
