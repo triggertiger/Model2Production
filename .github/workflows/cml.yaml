@@ -1,5 +1,7 @@
+
 name: hello-with-pandas
-on: schedule:
+on: 
+  schedule:
     - cron: "*/5 * * * *"  # Run every 10 minutes
 jobs:
   run:
