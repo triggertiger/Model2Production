@@ -20,5 +20,5 @@ jobs:
       - name: Train model
         run: |
           # Your ML workflow goes here
-          pip install -r requirements
+          pip install -r requirements.txt
           python hello.py
