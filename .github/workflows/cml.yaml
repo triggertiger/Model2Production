@@ -1,7 +1,8 @@
 name: hello-with-pandas
 on: 
   schedule:
-    - cron: "*/16 * * * *"  # Run every 2 minutes
+    - [push]
+    #- cron: "*/16 * * * *"  # Run every 2 minutes
 jobs:
   run:
     runs-on: ubuntu-latest
