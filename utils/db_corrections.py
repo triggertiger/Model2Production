@@ -20,6 +20,23 @@ def update_users(engine=engine, meta=meta):
                 )   
     execute_func(update_stmt)
 
-if __name__=="__main__":
-    update_users()
+def update_pass_hash(engine=engine, meta=meta):
+    users = Table('users', meta, autoload_with=engine)
+    pinkey = os.getenv('PINKEYHASH')
+    print(pinkey)
+    brain = os.getenv('BRAINHASH')
+    print(brain)
+    update_stmt1 = (
+                update(users).where(users.c.name == 'Pinkey').values(password_hash=str(pinkey))
+                )  
+    update_stmt2 = (
+                update(users).where(users.c.name == 'Brain').values(password_hash=brain)
+                )
+    execute_func(update_stmt1)
+    execute_func(update_stmt2)
 
+
+if __name__=="__main__":
+    #update_users()
+    
+    update_pass_hash()

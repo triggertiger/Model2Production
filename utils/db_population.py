@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase, Mapped, mappe
 from typing import Optional
 import pandas as pd
 import os
-from utils.config import DATABASE, DATA_FILE, DATA_PATH, TRAIN_DATES, USERS
+from config import DATABASE, DATA_FILE, DATA_PATH, TRAIN_DATES, USERS
 
 # database engine:
 engine = create_engine(DATABASE, echo=False)

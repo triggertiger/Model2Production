@@ -1,7 +1,7 @@
 import sqlalchemy
 from sqlalchemy import Column, Integer, String, Float, Table, MetaData, create_engine
 from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase
-from utils.config import DATABASE
+from config import DATABASE
 
 engine = create_engine(DATABASE, echo=True)
 

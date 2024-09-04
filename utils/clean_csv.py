@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import logging
-from utils.config import DATA_PATH, DATA_FILE, PARAMS, ORIGINAL_CSV
+from config import DATA_PATH, DATA_FILE, PARAMS, ORIGINAL_CSV
 
 # Configure logging
 logging.basicConfig(
@@ -49,11 +49,6 @@ def data_df_prep(csv, DATA_FILE):
         return data
     
     return data
-
-
-    
-
-        
 
 if __name__ == "__main__":
     params = PARAMS
