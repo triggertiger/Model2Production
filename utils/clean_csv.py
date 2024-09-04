@@ -53,8 +53,9 @@ def data_df_prep(csv, DATA_FILE):
 if __name__ == "__main__":
     params = PARAMS
     
-    data = data_df_prep(os.path.join(DATA_PATH, ORIGINAL_CSV), DATA_PATH) 
+    #data = data_df_prep(os.path.join(DATA_PATH, ORIGINAL_CSV), DATA_PATH) 
     loaded = pd.read_csv(f'data/{DATA_FILE}')
-    print(loaded.head(5))
+    loaded.index = pd.to_datetime(loaded.index)
+    short_df = loaded.loc[loaded[loaded.index < pd.to_datetime('2020-01-01 00:04:00')]]
     
     
