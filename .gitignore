@@ -9,10 +9,11 @@ data/
 .DS_Store
 notebooks/mlruns/*
 *.sqlite3
+
 # experimental notebooks
 app.ipynb
 
 # cache
 __pycache__/
-/__pycache__/
+*/__pycache__/
 
