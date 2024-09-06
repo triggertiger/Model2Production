@@ -88,7 +88,6 @@ class TrainDatesHandler:
 
         if self.prediction_start_date:
             if isinstance(self.prediction_start_date, datetime):
-                print('already datetime')
                 date = self.prediction_start_date
             else: 
                 date = datetime.strptime(self.prediction_start_date, '%Y-%m-%d') 
