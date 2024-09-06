@@ -6,6 +6,8 @@ mlruns/*
 # data
 #*.csv
 #data/
+data/ibm_4y.csv
+data/ibm_6y.csv
 .DS_Store
 notebooks/mlruns/*
 *.sqlite3
