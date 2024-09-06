@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, update, Table, Integer, insert
+from sqlalchemy import create_engine, MetaData, update, Table, Integer, insert, text
 from sqlalchemy.orm import Session
 import os
 
@@ -35,8 +35,16 @@ def update_pass_hash(engine=engine, meta=meta):
     execute_func(update_stmt1)
     execute_func(update_stmt2)
 
+def add_datetime(engine=engine, meta=meta):
+    transactions = Table('transactions', meta, autoload_with=engine)
+    if 'time_stamp_datetime' not in transactions.columns:
+            add_column = 'ALTER TABLE transactions ADD COLUMN time_stamp_datetime DATETIME;'
+            set_content = 'UPDATE transactions SET time_stamp_datetime = DATETIME(time_stamp);'
+            execute_func(text(add_column))
+            execute_func(text(set_content))
+
 
 if __name__=="__main__":
     #update_users()
-    
-    update_pass_hash()
+    add_datetime()
+    #update_pass_hash()

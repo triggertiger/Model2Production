@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI
+from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME, MLFLOW_REGISTERED_MODEL
 import os
 import numpy as np
 import tempfile
@@ -24,7 +24,7 @@ import mlflow
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="[%(filename)s:%(lineno)s - %(funcName)20s() ] %(asctime)s - %(levelname)s - %(message)s"
 )
 # mlflow uri
 mlflow.set_tracking_uri(uri=MLFLOW_URI)
@@ -72,7 +72,7 @@ class FraudDataProcessor:
 
     def __init__ (self, date=None):
         # load data from sql db
-        self.sql_handler = TrainDatesHandler()
+        self.sql_handler = TrainDatesHandler(date=date)
         self.retrain_df = self.sql_handler.get_retraining_data()
         self.predict_df = self.sql_handler.get_prediction_data()
         self.ypred = self.predict_df['is_fraud']
@@ -126,18 +126,12 @@ def update_params_output_bias(params, data: FraudDataProcessor):
     
 
 def load_saved_model(version='latest'):
-    # version = (len(os.listdir('saved_model')))
-    # return tf.keras.models.load_model(f'saved_model/{version}/mymodel.keras')
-    #try:
     start = time.time()
-    model_uri = f"models:/fraud_analysis/{version}"    
+    
+    model_uri = f"models:/{REGISTERED_MODEL_NAME}/{version}"    
     model = mlflow.keras.load_model(model_uri=model_uri)
     logging.info(f'model loaded from: {model_uri}')
-#except KeyError:
-        # model_uri = 'runs:/f10dd34c228d4ced92c266a30a552afb/'
-        # model = mlflow.tensorflow.load_model(model_uri=model_uri)
-        # print(f'loaded from: {model_uri}')
-    # model = mlflow.pyfunc.load_model(f'models:/{name}/{version}')
+
     logging.info(f'loading time: {time.time()-start}')
     return model
 
@@ -167,7 +161,7 @@ def model_re_trainer(model, data, params, train_params, output_bias_generator=Tr
             output_bias = tf.keras.initializers.Constant(params['output_bias']) 
         
         tags = {k: v for k, v in params.items()}
-        mlflow.tensorflow.autolog(registered_model_name='fraud_analysis')
+        mlflow.tensorflow.autolog(registered_model_name=REGISTERED_MODEL_NAME)
         mlflow.log_params(params)
         mlflow.log_params(train_params)
         mlflow.set_tags(tags)
@@ -241,14 +235,14 @@ def re_train_pipeline(date= '2019-01-01', model_version='latest'):
     return eval_resutls
 
 def predict_pipeline(date= '2019-01-01', model_version='latest'):
-    logging.info('loading sql data')
+    logging.info(f'loading sql data for date {date}')
     start = time.time()
     data = FraudDataProcessor(date=date)
     data.x_y_generator()
     logging.info(f'sql loading & preprocessing time: {time.time()-start}')
     logging.info('loading model')
     model = load_saved_model(version=model_version)
-    print(model.summary())
+    
     return predict(model, data)
 
     #data.x_y_generator()

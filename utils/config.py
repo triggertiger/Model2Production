@@ -12,7 +12,8 @@ DATA_FILE = "clean_cc_data.csv"
 DATABASE = 'sqlite:///data/fraud_transactions.db'
 DATABASE_FULL_PATH = 'sqlite:////Users/inbalshalev/Documents/model_production/data/fraud_transactions.db'
 MLFLOW_URI = 'http://127.0.0.1:5000'
-
+REGISTERED_MODEL_NAME = 'fraud_analysis'
+MLFLOW_REGISTERED_MODEL = os.path.join('mlruns/models', REGISTERED_MODEL_NAME)
 
 # model architecture paramseters:
 PARAMS = {

@@ -2,12 +2,32 @@
 {% block title %}login page{% endblock %}
 {% block content %}
 <h1>hello {{username}}! you are now logged in</h1>
-    <p>Your last review was to month: {{ last_train_date }}</p>
-    <form action="/predict_current" method="POST">
-        <p><input type="submit" value="Show next"/></p>
+    <h3>Your review data is ready until the date: {{ last_train_date }} </h3> 
+        <br>
+        <p>Which period would you like to watch next?</p>
+    <form action="#" method="POST">
+    <!-- <form action="/predict" method="POST"> -->
+
+        <label for="dropdown">Choose the next date from the list</label><br>
+        <select id="date_picker" name="dropdown">
+            <option value="{{dates[0] if dates else '' }}" selected>{{dates[0] if dates else '' }}</option>
+            <!-- <option value="{{dates[0]}}" selected>{{dates[0] }}</option> -->
+            {% for dat in dates[1:] %}
+            <option value="{{dat}}" {% if dat == selected_date %}selected{% endif %}>{{dat}}</option>
+            <!-- <option value="{{dat}}" selected> {{dat}}</option> -->
+            {% endfor %}
+        </select>
+        <p><input type="submit" value="Show predictions"/></p>
+    </form>
+        
+
+    
+    <br>
+    <form action="/predict_current" method="GET">
+        <p><input type="submit" value="Show data predictions"/></p>
     </form>
     <form action="/retrain" method="POST">
-        <p><input type="submit" value="get new data"/></p>
+        <p><input type="submit" value="go to next month"/></p>
     </form>
   
 <a href="{{ url_for('logout') }}">press here to log out</a>
