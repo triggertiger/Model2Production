@@ -15,6 +15,8 @@ MLFLOW_URI = 'http://127.0.0.1:5000'
 REGISTERED_MODEL_NAME = 'fraud_analysis'
 MLFLOW_REGISTERED_MODEL = os.path.join('mlruns/models', REGISTERED_MODEL_NAME)
 
+GOOGLE_DRIVE_ID = '1yLtGjeZUdxAvi5l6ZoDrfA61ZDRth_G3'
+
 # model architecture paramseters:
 PARAMS = {
     # logging: raise warning if the number of items in the list layer size 
