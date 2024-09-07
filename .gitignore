@@ -1,9 +1,7 @@
 .env
 
 # model data:
-mlruns/.trash
-mlruns/0
-mlruns/42*
+mlruns/*
 
 # data
 #*.csv
