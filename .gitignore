@@ -1,7 +1,7 @@
 .env
-
+.json
 # model data:
-mlruns/*
+# mlruns/*
 
 # data
 *.csv
