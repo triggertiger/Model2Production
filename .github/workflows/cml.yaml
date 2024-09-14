@@ -5,7 +5,7 @@ on:
   #   - [push]
   #   #- cron: "*/16 * * * *"  # Run every 2 minutes
 jobs:
-  access-drive:
+  read-gdrive:
     runs-on: ubuntu-latest
     steps:
     # checkout code to the runner
