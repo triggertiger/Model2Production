@@ -18,10 +18,10 @@ jobs:
           python-version: '3.9'  
       - name: setup gcp cred json
         run: echo "${{ secrets.GCP_CREDENTIALS_JSON }}" > token.json
-            cat token.json
       - name: Read from Gdrive
         run: |
           # Your ML workflow goes here
-          pip install -r requirements.txt
+          cat token.json
+          # pip install -r requirements.txt
           
-          python load_from_drive.py
+          # python load_from_drive.py
