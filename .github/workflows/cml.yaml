@@ -1,25 +1,27 @@
-name: hello-with-pandas
+name: connect to drive
 on: 
-  schedule:
-    - [push]
-    #- cron: "*/16 * * * *"  # Run every 2 minutes
+  push
+  # schedule:
+  #   - [push]
+  #   #- cron: "*/16 * * * *"  # Run every 2 minutes
 jobs:
-  run:
+  access-drive:
     runs-on: ubuntu-latest
-    # optionally use a convenient Ubuntu LTS + DVC + CML image
-    # container: ghcr.io/iterative/cml:0-dvc2-base1
     steps:
-      - uses: actions/checkout@v3
-      # may need to setup NodeJS & Python3 on e.g. self-hosted
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'
-      # - uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.x'
-      # - uses: iterative/setup-cml@v1
-      - name: Train model
+    # checkout code to the runner
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  
+      - name: setup gcp cred json
+        run: echo "${{ secrets.GCP_CREDENTIALS_JSON }}" > token.json
+            
+      - name: Read from Gdrive
         run: |
           # Your ML workflow goes here
           pip install -r requirements.txt
-          python hello.py
+          mkdir /tmp
+          python load_from_drive.py
