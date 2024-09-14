@@ -94,8 +94,8 @@ def gcp_auth_download():
 if __name__ == "__main__":
     gcp_auth_download()
     
-    user_data = TrainDatesHandler(date='2019-01-01')
-    df = user_data.get_prediction_data()
-    print(df.head())
+    # user_data = TrainDatesHandler(date='2019-01-01')
+    # df = user_data.get_prediction_data()
+    # print(df.head())
 
 
