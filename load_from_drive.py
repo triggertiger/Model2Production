@@ -67,6 +67,12 @@ def gcp_auth_download():
     db_file_id = database_file[0]['id']
     
     local_path = os.path.join('./tmp', os.getenv('DATABASE_FILE_NAME'))
+    if os.path.exists('./tmp'):
+        print('temp path exists')
+        return
+    else: 
+        print('tmp does not exist')
+        return
     if not os.path.exists(local_path):
 
         try:
@@ -84,6 +90,7 @@ def gcp_auth_download():
 
 if __name__ == "__main__":
     gcp_auth_download()
+    
     user_data = TrainDatesHandler(date='2019-01-01')
     df = user_data.get_prediction_data()
     print(df.head())
