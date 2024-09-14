@@ -1,10 +1,8 @@
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, update, Table, select, Integer
-from sqlalchemy.orm import Session
-from utils.config import DATABASE, DATABASE_FULL_PATH
+from sqlalchemy import create_engine, MetaData, update, Table, select
+from utils.config import DATABASE_FULL_PATH
 import os
 from datetime import datetime
-
 
 # get data from sql database: 
 class TrainDatesHandler:

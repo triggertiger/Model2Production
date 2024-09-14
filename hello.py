@@ -1,16 +1,18 @@
-#from utils.sql_data_queries import TrainDatesHandler
+from utils.sql_data_queries import TrainDatesHandler
 import os
+import io
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.errors import HttpError
+from googleapiclient.http import MediaIoBaseDownload
+
 
 # Fetch credentials from environment variables
 SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_SECRETS = 'client_secret.json'
-# creds = Credentials.from_authorized_user_file(CLIENT_SECRETS, 
-#                                               scopes=SCOPES)
+
 FILENAME = 'fraud_transactions.db'
 
 # Authenticate using the service account
@@ -32,34 +34,15 @@ if not creds or not creds.valid:
     with open('token.json', "w") as token:
       token.write(creds.to_json())
 
+mime = 'application/vnd.google-apps.folder'
 try:
     service = build("drive", "v3", credentials=creds)
     FOLDER_ID = '1eF7_bF3_Ri3DR1OLnOzPCa7cFJzp_4Sf'  
-    #FILE_ID = 
-
-    # supported mimeTypes here: https://developers.google.com/drive/api/guides/mime-types 
-
-    results = (
-        service.files().list(fields=" files(id, name)").execute()
-        )
-    items = results.get("files", [])
-
-    if not items:
-        print('no files found')
-        
-    print("Files list: ") 
-    for item in items:
-        print(f'{item["name"]} ){item["id"]}')   
 
 except HttpError as error:
-    
     print(f"An error occurred: {error}")
-
-
-# Your logic to access the Google Drive folder and fetch the data
-
-# Example: Listing files in the folder
-results = service.files().list(q=f"'{FOLDER_ID} in parents").execute()
+# access the Google Drive folder and fetch the data
+results = service.files().list(q=f"'{FOLDER_ID}' in parents").execute()
 items = results.get('files', [])
 
 if not items:
@@ -68,4 +51,28 @@ else:
     print('Files:')
     for item in items:
         print(f"{item['name']} ({item['id']})")
+    database_file = [d for d in items if d['name'].endswith('.db')]
+    print(f'database file is: {database_file[0]["id"]}')
+    db_file_id = database_file[0]['id']
+    db_file_name = database_file[0]['name']
+
+local_path = './tmp/fraud_transactions.db'
+try:
+    request = service.files().get_media(fileId=db_file_id)
+    with io.FileIO(local_path, 'wb') as f:
+        downloader = MediaIoBaseDownload(f, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+            print(f"Download {int(status.progress() * 100)}.")
+
+    print(downloader)
+    print(f'downloaded complete to: {local_path}')
+except HttpError as error:
+    print(f"An error occurred: {error}")
+    
+user_data = TrainDatesHandler(date='2019-01-01', database=f'sqlite:///tmp/fraud_transactions.db')
+df = user_data.get_prediction_data()
+print(df.head())
+
 
