@@ -4,20 +4,18 @@ import matplotlib.pyplot as plt
 import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from utils.config import PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME, MLFLOW_REGISTERED_MODEL
+from utils.config import PARAMS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME
 import os
 import numpy as np
 import tempfile
 
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
 
 import tensorflow as tf
-from tensorflow import keras
 import mlflow
 
 

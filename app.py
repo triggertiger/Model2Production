@@ -1,22 +1,21 @@
 from flask import Flask, request, flash, jsonify, redirect, url_for, render_template, session
-from flask_restful import Api   #, Resource, fields, reqparse
+from flask_restful import Api 
 import data_prep_pipeline
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from utils.config import DATABASE_FULL_PATH, MLFLOW_URI, MLFLOW_REGISTERED_MODEL
+from utils.config import MLFLOW_URI, MLFLOW_REGISTERED_MODEL
 
 from sqlalchemy.ext.automap import automap_base
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, length
 from datetime import datetime
 import os
-import pandas as pd
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from dash import Dash, html, dash_table #, dcc, callback, Input, Output
+from dash import Dash, html, dash_table 
 import mlflow
 import multiprocessing
 
@@ -35,7 +34,7 @@ def start_mlflow_server():
 # starting Flask app and db connection, dash server
 app = Flask(__name__)
 app.secret_key = '123'
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_FULL_PATH
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 app.app_context().push()
@@ -220,23 +219,6 @@ def retrain():
     eval_results = train_new_data()
     # return f'{eval_results} '
     return jsonify(eval_results)
-
-# hashing existing password: (worst way to do this but it needed to be done for the login management)
-# correct way would be to make a route for the users to set a password. passowrds were in the database already
-'''
-@app.route('/test')
-def test():
-    pinkey_hashed_password = bcrypt.generate_password_hash("WhatDoWeDoTonight")
-    brain_hashed_password = bcrypt.generate_password_hash("TakeOverTheWorld")
-
-    pinkey = db.session.query(Users).filter_by(name='Pinkey').first()
-    pinkey.password_hash = pinkey_hashed_password
-    brain = db.session.query(Users).filter_by(name='Brain').first()
-    brain.password_hash = brain_hashed_password
-    db.session.commit()
-    
-return ''
-'''    
 
 if __name__ =="__main__":
         

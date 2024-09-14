@@ -5,13 +5,13 @@ from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase, Mapped, mappe
 from typing import Optional
 import pandas as pd
 import os
-from config import DATABASE, DATA_FILE, DATA_PATH, TRAIN_DATES, USERS
+from config import DATABASE_FULL_PATH, DATA_FILE, DATA_FOLDER, TRAIN_DATES, USERS
 
 # database engine:
-engine = create_engine(DATABASE, echo=False)
+engine = create_engine(DATABASE_FULL_PATH, echo=False)
 
 # create a dataframe, reset the index from datetime index to continous int
-fileToRead = os.path.join(DATA_PATH, DATA_FILE)
+fileToRead = os.path.join(DATA_FOLDER, DATA_FILE)
 df = pd.read_csv(fileToRead)
 df.reset_index(inplace=True)
 df.rename(columns={'index': 'time_stamp'}, inplace=True)
