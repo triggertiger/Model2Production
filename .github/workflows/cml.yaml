@@ -18,8 +18,12 @@ jobs:
           python-version: '3.9'  
 
       - name: Read from Gdrive
+        env:
+          DATABASE_FILE_NAME: ${{ secrets.DATABASE_FILE_NAME }}
+          DATABASE: ${{ secrets.DATABASE }}
+          GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
+          GCP_FOLDER_ID: $ {{ secrets.GCP_FOLDER_ID}}
         run: |
-          
           # Your ML workflow goes here
           pip install -r requirements.txt
           python load_from_drive.py

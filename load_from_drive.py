@@ -33,8 +33,9 @@ def gcp_auth_download():
         token = os.getenv('GCP_CREDENTIALS_JSON')
         with open('token.json', 'w') as f:
             json.dump(token, f)
-
+            
     if os.path.exists('token.json'):
+        logging.info('json file exists')
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
@@ -73,10 +74,11 @@ def gcp_auth_download():
     
     local_path = os.path.join('./tmp', os.getenv('DATABASE_FILE_NAME'))
     if not os.path.exists('./tmp'):
-        logging.info('temp path exists')
+        logging.info('temp does not path exists')
         os.makedev('tmp')
+    
     if not os.path.exists(local_path):
-
+        logging.info('preparing for download db file')
         try:
             request = service.files().get_media(fileId=db_file_id)
             with io.FileIO(local_path, 'wb') as f:
