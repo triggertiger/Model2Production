@@ -17,7 +17,11 @@ jobs:
         with:
           python-version: '3.9'  
       - name: setup gcp cred json
-        run: cat <<EOF> token.json ${{ secrets.GCP_CREDENTIALS_JSON }} > token.json EOF
+        run:
+          cat <<EOF > credentials.json
+          ${{ secrets.GCP_CREDENTIALS_JSON }}
+          EOF
+        
       - name: Read from Gdrive
         run: |
           # Your ML workflow goes here
