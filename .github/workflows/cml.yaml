@@ -27,3 +27,4 @@ jobs:
           # Your ML workflow goes here
           pip install -r requirements.txt
           python load_from_drive.py
+          cat token.json

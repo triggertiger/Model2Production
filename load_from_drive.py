@@ -33,9 +33,8 @@ def gcp_auth_download():
         token = os.getenv('GCP_CREDENTIALS_JSON')
         with open('token.json', 'w') as f:
             json.dump(token, f)
-            
+        return        
     if os.path.exists('token.json'):
-        logging.info('json file exists')
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
