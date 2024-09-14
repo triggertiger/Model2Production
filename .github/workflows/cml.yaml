@@ -19,8 +19,7 @@ jobs:
 
       - name: Read from Gdrive
         run: |
-          python hello.py
-          # Your ML workflow goes here
-          #pip install -r requirements.txt
           
-          #python load_from_drive.py
+          # Your ML workflow goes here
+          pip install -r requirements.txt
+          python load_from_drive.py

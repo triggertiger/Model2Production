@@ -33,7 +33,7 @@ def gcp_auth_download():
         token = os.getenv('GCP_CREDENTIALS_JSON')
         with open('token.json', 'w') as f:
             json.dump(token, f)
-            
+
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
@@ -48,33 +48,32 @@ def gcp_auth_download():
         # Save the credentials for the next run
         with open('token.json', "w") as token:
             token.write(creds.to_json())
+        logging.info('credentials refreshed')
 
 
     try:
         service = build("drive", "v3", credentials=creds)
         FOLDER_ID = os.getenv('GCP_FOLDER_ID')  
-        print(FOLDER_ID)
-        print(type(FOLDER_ID))
+        
     except HttpError as error:
-        print(f"An error occurred: {error}")
+        logging.info(f"An error occurred: {error}")
     # access the Google Drive folder and fetch the data
     results = service.files().list(q=f"'{FOLDER_ID}' in parents").execute()
     items = results.get('files', [])
 
     if not items:
-        print('No files found.')
+        logging.info('No files found.')
         return
     
-    print('Files:')
     for item in items:
-        print(f"{item['name']} ({item['id']})")
+        logging.info(f"{item['name']} ({item['id']})")
     database_file = [d for d in items if d['name'].endswith('.db')]
-    print(f'database file is: {database_file[0]["id"]}')
+    logging.info(f'database file is: {database_file[0]["id"]}')
     db_file_id = database_file[0]['id']
     
     local_path = os.path.join('./tmp', os.getenv('DATABASE_FILE_NAME'))
     if not os.path.exists('./tmp'):
-        print('temp path exists')
+        logging.info('temp path exists')
         os.makedev('tmp')
     if not os.path.exists(local_path):
 
@@ -85,11 +84,11 @@ def gcp_auth_download():
                 done = False
                 while done is False:
                     status, done = downloader.next_chunk()
-                    print(f"Download {int(status.progress() * 100)}.")
+                    logging.info(f"Download {int(status.progress() * 100)}.")
             
-            print(f'downloaded complete to: {local_path}')
+            logging.info(f'downloaded complete to: {local_path}')
         except HttpError as error:
-            print(f"An error occurred: {error}")
+            logging.info(f"An error occurred: {error}")
 
 if __name__ == "__main__":
     gcp_auth_download()
