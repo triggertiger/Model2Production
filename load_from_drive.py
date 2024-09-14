@@ -2,6 +2,7 @@ from utils.sql_data_queries import TrainDatesHandler
 import os
 import io
 import json
+import logging
 
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
@@ -10,24 +11,29 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 
+# configure logging
+logging.basicConfig(
+    level=logging.INFO, format="[%(filename)s:%(lineno)s - %(funcName)20s() ] %(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Fetch credentials from environment variables
 SCOPES = ['https://www.googleapis.com/auth/drive']
 CLIENT_SECRETS = 'client_secret.json'
 
 FILENAME = os.getenv('DATABASE_FILE_NAME')
-
+logging.info(FILENAME)
 # Authenticate using the service account
 creds = None
 
 def gcp_auth_download():
 
     if not os.path.exists('token.json'):
+
+        logging.info('generating token file')
         token = os.getenv('GCP_CREDENTIALS_JSON')
-        print(token)
         with open('token.json', 'w') as f:
             json.dump(token, f)
-        return
+            
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
