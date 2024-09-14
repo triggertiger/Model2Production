@@ -1,6 +1,7 @@
 from utils.sql_data_queries import TrainDatesHandler
 import os
 import io
+import json
 
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
@@ -21,6 +22,12 @@ creds = None
 
 def gcp_auth_download():
 
+    if not os.path.exists('token.json'):
+        token = os.getenv('GCP_CREDENTIALS_JSON')
+        print(token)
+        with open('token.json', 'w') as f:
+            json.dump(token, f)
+        return
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
