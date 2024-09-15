@@ -10,7 +10,8 @@ jobs:
     steps:
     # checkout code to the runner
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.7
+
       - name: json-to-file  
         uses: devops-actions/json-to-file@v1.0.4
         with: 
@@ -18,9 +19,13 @@ jobs:
           filename: token.json
               
       - name: setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5.2.0
         with:
           python-version: '3.9'  
+      - name: install requirements
+        run: 
+          cat token.json | jq '. | keys'
+          pip install -r requirements.txt
 
       - name: Read from Gdrive
         env:
@@ -30,7 +35,18 @@ jobs:
           GCP_FOLDER_ID: ${{ secrets.GCP_FOLDER_ID }}
         run: |
           # Your ML workflow goes here
-          
-          cat token.json | jq '. | keys'
-          pip install -r requirements.txt
-          python load_from_drive.py
+          python retrin_model.py
+
+      - name: upload model as artifact
+        uses: actions/upload-artifact@v4.4.0
+        with: 
+          name: register new mlflow model version
+          path:./mlruns/
+      
+      - name: commit and push
+        run: |
+          git add mlruns/*
+          git commit -m "new model version"
+          git push
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
