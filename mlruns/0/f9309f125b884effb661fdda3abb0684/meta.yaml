@@ -1,0 +1,15 @@
+artifact_uri: /Users/inbalshalev/Documents/tests/mlruns/0/f9309f125b884effb661fdda3abb0684/artifacts
+end_time: 1726416184334
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f9309f125b884effb661fdda3abb0684
+run_name: awesome-ant-905
+run_uuid: f9309f125b884effb661fdda3abb0684
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726416127230
+status: 3
+tags: []
+user_id: Pinkey

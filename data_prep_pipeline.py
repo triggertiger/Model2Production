@@ -25,6 +25,7 @@ logging.basicConfig(
     level=logging.INFO, format="[%(filename)s:%(lineno)s - %(funcName)20s() ] %(asctime)s - %(levelname)s - %(message)s"
 )
 # mlflow uri
+
 mlflow.set_tracking_uri(uri=MLFLOW_URI)
 logging.info(f'data_prep: tracking uri: {mlflow.get_tracking_uri()}')
 

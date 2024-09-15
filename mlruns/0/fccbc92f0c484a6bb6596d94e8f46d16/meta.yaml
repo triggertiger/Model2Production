@@ -1,0 +1,15 @@
+artifact_uri: /Users/inbalshalev/Documents/tests/mlruns/0/fccbc92f0c484a6bb6596d94e8f46d16/artifacts
+end_time: 1725565077191
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: fccbc92f0c484a6bb6596d94e8f46d16
+run_name: vaunted-snail-362
+run_uuid: fccbc92f0c484a6bb6596d94e8f46d16
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1725565025388
+status: 3
+tags: []
+user_id: Pinkey

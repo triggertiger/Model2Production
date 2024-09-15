@@ -1,0 +1,15 @@
+artifact_uri: /Users/inbalshalev/Documents/tests/mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts
+end_time: 1725565954735
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 47def34199c345ec98bf2ceab33a0e86
+run_name: likeable-slug-446
+run_uuid: 47def34199c345ec98bf2ceab33a0e86
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1725565904790
+status: 3
+tags: []
+user_id: Pinkey

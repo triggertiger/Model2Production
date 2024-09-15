@@ -1,8 +1,10 @@
 from utils.sql_data_queries import TrainDatesHandler
+from load_from_drive import gcp_auth_download
 import data_prep_pipeline
 import os
 import json
 
+gcp_auth_download()
 database = os.getenv('DATABASE')
 
 # def update_last_training_date_in_db():
