@@ -16,9 +16,7 @@ jobs:
         with: 
           json: ${{ secrets.GCP_CREDENTIALS_JSON }} 
           filename: token.json
-        
-        run: |
-          cat token.json
+              
       - name: setup python
         uses: actions/setup-python@v4
         with:
