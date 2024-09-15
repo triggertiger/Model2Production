@@ -33,7 +33,7 @@ jobs:
           # Your ML workflow goes here
           # cat token.json | jq '. | keys'
           pip install -r requirements.txt
-          python retrin_model.py
+          python retrain_model.py
 
       - name: upload model as artifact
         uses: actions/upload-artifact@v4.4.0
