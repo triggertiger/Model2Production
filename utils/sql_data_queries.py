@@ -1,10 +1,8 @@
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, update, Table, select, Integer
-from sqlalchemy.orm import Session
-from utils.config import DATABASE, DATABASE_FULL_PATH
+from sqlalchemy import create_engine, MetaData, update, Table, select
+#from utils.config import DATABASE_FULL_PATH
 import os
 from datetime import datetime
-
 
 # get data from sql database: 
 class TrainDatesHandler:
@@ -12,7 +10,7 @@ class TrainDatesHandler:
     starts and queries an SQLAlchemy engine.
     outputs data in different dataframes for the cases of - 
     initial training, for retraining on additional periods, and for predictions"""
-    def __init__(self, date=None, username="Pinkey", database=DATABASE_FULL_PATH):
+    def __init__(self, date=None, username="Pinkey", database=os.getenv('DATABASE')):
         
 # data engine:
         self.database = database

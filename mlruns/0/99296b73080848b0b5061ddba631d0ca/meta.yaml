@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/0/99296b73080848b0b5061ddba631d0ca/artifacts
+end_time: 1726432010071
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 99296b73080848b0b5061ddba631d0ca
+run_name: big-dog-992
+run_uuid: 99296b73080848b0b5061ddba631d0ca
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726431964293
+status: 3
+tags: []
+user_id: runner

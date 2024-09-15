@@ -1,25 +1,61 @@
-name: hello-with-pandas
+name: connect to drive
 on: 
-  schedule:
-    - [push]
-    #- cron: "*/16 * * * *"  # Run every 2 minutes
+  push
+  # schedule:
+  #   - [push]
+  #   #- cron: "*/16 * * * *"  # Run every 2 minutes
 jobs:
-  run:
+  read-gdrive:
     runs-on: ubuntu-latest
-    # optionally use a convenient Ubuntu LTS + DVC + CML image
-    # container: ghcr.io/iterative/cml:0-dvc2-base1
     steps:
-      - uses: actions/checkout@v3
-      # may need to setup NodeJS & Python3 on e.g. self-hosted
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'
-      # - uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.x'
-      # - uses: iterative/setup-cml@v1
-      - name: Train model
+    # checkout code to the runner
+      - name: checkout code
+        uses: actions/checkout@v4.1.7
+
+      - name: json-to-file  
+        uses: devops-actions/json-to-file@v1.0.4
+        with: 
+          json: ${{ secrets.GCP_CREDENTIALS_JSON }} 
+          filename: token.json
+              
+      - name: setup python
+        uses: actions/setup-python@v5.2.0
+        with:
+          python-version: '3.9'  
+
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: start mlflow server
+        run: |
+          mlflow server --host 127.0.0.1 --port 5000 &
+      - name: Read from Gdrive
+        env:
+          DATABASE_FILE_NAME: ${{ secrets.DATABASE_FILE_NAME }}
+          DATABASE: ${{ secrets.DATABASE }}
+          GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
+          GCP_FOLDER_ID: ${{ secrets.GCP_FOLDER_ID }}
         run: |
           # Your ML workflow goes here
-          pip install -r requirements.txt
-          python hello.py
+          # cat token.json | jq '. | keys'
+          # pip install -r requirements.txt
+          python retrain_model.py
+
+      - name: upload model as artifact
+        uses: actions/upload-artifact@v4.4.0
+        with: 
+          name: register new mlflow model version
+          path: ./mlruns/
+      
+      - name: commit and push changes
+        env: 
+          PUSH_ACCESS_TOKEN: ${{ secrets.PUSH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add mlruns/*
+          git commit -m "new model version [skip ci]"   
+          git remote set-url origin https://x-access-token:${PUSH_ACCESS_TOKEN}@github.com/${{ github.repository }}.git
+          git push
+        
+

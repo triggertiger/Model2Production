@@ -2,18 +2,20 @@
 import pandas as pd
 import os
 from dotenv import load_dotenv
+from tensorflow import keras
 
-load_dotenv()
+load_dotenv('.env')
 
 # Paths
-DATA_PATH = "data"
+DATA_FOLDER = os.getenv('DATA_FOLDER')
 ORIGINAL_CSV = "ibm_4y.csv"
 DATA_FILE = "clean_cc_data.csv" 
-DATABASE = 'sqlite:///data/fraud_transactions.db'
-DATABASE_FULL_PATH = 'sqlite:////Users/inbalshalev/Documents/model_production/data/fraud_transactions.db'
+DATABASE = os.getenv('DATABASE')
 MLFLOW_URI = 'http://127.0.0.1:5000'
 REGISTERED_MODEL_NAME = 'fraud_analysis'
 MLFLOW_REGISTERED_MODEL = os.path.join('mlruns/models', REGISTERED_MODEL_NAME)
+
+DATABASE_FULL_PATH = f'sqlite:///{DATA_FOLDER}/fraud_transactions.db'
 
 # model architecture paramseters:
 PARAMS = {
@@ -28,7 +30,6 @@ PARAMS = {
     'nr_of_layers': 4
     }
 
-from tensorflow import keras
 # model metrics: 
 MODEL_METRICS = {
     'binary_crossentropy': keras.metrics.BinaryCrossentropy(name='binary_crossentropy'), 

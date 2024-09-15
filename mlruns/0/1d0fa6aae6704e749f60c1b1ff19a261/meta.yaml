@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/0/1d0fa6aae6704e749f60c1b1ff19a261/artifacts
+end_time: 1726419250420
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 1d0fa6aae6704e749f60c1b1ff19a261
+run_name: wise-wolf-80
+run_uuid: 1d0fa6aae6704e749f60c1b1ff19a261
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726419191055
+status: 3
+tags: []
+user_id: Pinkey

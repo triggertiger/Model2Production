@@ -1,11 +1,11 @@
 .env
-
+*.json
 # model data:
-mlruns/*
+# mlruns/*
 
 # data
 *.csv
-data/
+*.db
 .DS_Store
 notebooks/mlruns/*
 *.sqlite3
@@ -18,3 +18,4 @@ __pycache__/
 */__pycache__/*
 *.pyc
 
+tmp/
