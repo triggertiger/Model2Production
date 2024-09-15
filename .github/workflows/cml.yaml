@@ -27,7 +27,7 @@ jobs:
           DATABASE_FILE_NAME: ${{ secrets.DATABASE_FILE_NAME }}
           DATABASE: ${{ secrets.DATABASE }}
           GCP_CREDENTIALS_JSON: ${{ secrets.GCP_CREDENTIALS_JSON }}
-          GCP_FOLDER_ID: $ {{ secrets.GCP_FOLDER_ID}}
+          GCP_FOLDER_ID: ${{ secrets.GCP_FOLDER_ID }}
         run: |
           # Your ML workflow goes here
           
