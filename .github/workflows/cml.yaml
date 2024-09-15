@@ -11,9 +11,14 @@ jobs:
     # checkout code to the runner
       - name: checkout code
         uses: actions/checkout@v3
-      - name: create token file
+      - name: json-to-file  
+        uses: devops-actions/json-to-file@v1.0.4
+        with: 
+          json: ${{ secrets.GCP_CREDENTIALS_JSON }} 
+          filename: token.json
+        
         run: |
-          cat ${{ secrets.GCP_CREDENTIALS_JSON }} | base64 -d > token.json
+          cat token.json
       - name: setup python
         uses: actions/setup-python@v4
         with:
