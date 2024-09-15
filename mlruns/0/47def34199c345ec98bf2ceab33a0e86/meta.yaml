@@ -1,4 +1,4 @@
-artifact_uri: /Users/inbalshalev/Documents/tests/mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts
+artifact_uri: ./mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts
 end_time: 1725565954735
 entry_point_name: ''
 experiment_id: '0'

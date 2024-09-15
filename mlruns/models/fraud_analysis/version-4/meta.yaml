@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1726419242632
+current_stage: None
+description: ''
+last_updated_timestamp: 1726419242632
+name: fraud_analysis
+run_id: 1d0fa6aae6704e749f60c1b1ff19a261
+run_link: ''
+source: ./mlruns/0/1d0fa6aae6704e749f60c1b1ff19a261/artifacts/model
+status: READY
+status_message: null
+storage_location: ./mlruns/0/1d0fa6aae6704e749f60c1b1ff19a261/artifacts/model
+user_id: null
+version: 4
