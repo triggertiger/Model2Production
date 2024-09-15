@@ -16,11 +16,7 @@ jobs:
         with: 
           json: ${{ secrets.GCP_CREDENTIALS_JSON }} 
           filename: token.json
-      - name: Temporarily disable masking (for debugging)
-      run: |
-        echo "::add-mask::false"  # This temporarily disables masking
-        cat tokens.json      # Print the full content (be cautious)
-
+              
       - name: setup python
         uses: actions/setup-python@v4
         with:
@@ -34,6 +30,10 @@ jobs:
           GCP_FOLDER_ID: $ {{ secrets.GCP_FOLDER_ID}}
         run: |
           # Your ML workflow goes here
+          
+  
+          echo "::add-mask::false"  # This temporarily disables masking
+          cat token.json      # Print the full content (be cautious)
           cat token.json | jq '. | keys'
           # pip install -r requirements.txt
           # python load_from_drive.py
