@@ -1,0 +1,6 @@
+artifact_location: file:///Users/inbalshalev/Documents/model_production/fraud_analysis/mlruns/423104802281200520
+creation_time: 1716818443056
+experiment_id: '423104802281200520'
+last_update_time: 1716818443056
+lifecycle_stage: active
+name: fraud_detection

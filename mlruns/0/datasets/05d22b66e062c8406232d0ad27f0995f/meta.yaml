@@ -1,0 +1,10 @@
+digest: 5fea8fcd
+name: dataset
+profile: '{"features_cardinality": 2689}'
+schema: '{"mlflow_tensorspec": {"features": "[{\"name\": \"0\", \"type\": \"tensor\",
+  \"tensor-spec\": {\"dtype\": \"float64\", \"shape\": [-1, 15]}}, {\"name\": \"1\",
+  \"type\": \"tensor\", \"tensor-spec\": {\"dtype\": \"int64\", \"shape\": [-1, 1]}}]",
+  "targets": null}}'
+source: '{"tags": {"mlflow.user": "Pinkey", "mlflow.source.name": "/Users/inbalshalev/Documents/cloud_computing/app.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "ab1e0c95bb8b9e33aaee5302be44e8a848644933"}}'
+source_type: code
