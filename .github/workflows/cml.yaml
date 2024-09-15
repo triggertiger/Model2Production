@@ -30,6 +30,6 @@ jobs:
           GCP_FOLDER_ID: $ {{ secrets.GCP_FOLDER_ID}}
         run: |
           # Your ML workflow goes here
-          cat token.json
+          cat token.json | jq '. | keys'
           # pip install -r requirements.txt
           # python load_from_drive.py
