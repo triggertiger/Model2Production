@@ -75,7 +75,7 @@ def gcp_auth_download():
     local_path = os.path.join('./tmp', os.getenv('DATABASE_FILE_NAME'))
     if not os.path.exists('./tmp'):
         logging.info('temp does not path exists')
-        os.makedev('tmp')
+        os.makdirs('tmp')
     
     if not os.path.exists(local_path):
         logging.info('preparing for download db file')
