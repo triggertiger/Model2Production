@@ -5,7 +5,7 @@
 
 # data
 *.csv
-data/
+*.db
 .DS_Store
 notebooks/mlruns/*
 *.sqlite3
