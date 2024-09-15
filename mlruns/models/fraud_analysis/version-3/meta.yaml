@@ -6,9 +6,9 @@ last_updated_timestamp: 1725565945926
 name: fraud_analysis
 run_id: 47def34199c345ec98bf2ceab33a0e86
 run_link: ''
-source: /Users/inbalshalev/Documents/tests/mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts/model
+source: ./mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts/model
 status: READY
 status_message: null
-storage_location: /Users/inbalshalev/Documents/tests/mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts/model
+storage_location: ./mlruns/0/47def34199c345ec98bf2ceab33a0e86/artifacts/model
 user_id: null
 version: 3
