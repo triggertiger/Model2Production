@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/0/c9ce7869b3444bd5b4adc9ba3d57ff5a/artifacts
+end_time: 1726433896121
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c9ce7869b3444bd5b4adc9ba3d57ff5a
+run_name: amusing-rook-953
+run_uuid: c9ce7869b3444bd5b4adc9ba3d57ff5a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726433849786
+status: 3
+tags: []
+user_id: runner
