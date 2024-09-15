@@ -31,9 +31,6 @@ jobs:
         run: |
           # Your ML workflow goes here
           
-  
-          echo "::add-mask::false"  # This temporarily disables masking
-          cat token.json      # Print the full content (be cautious)
           cat token.json | jq '. | keys'
-          # pip install -r requirements.txt
-          # python load_from_drive.py
+          pip install -r requirements.txt
+          python load_from_drive.py
