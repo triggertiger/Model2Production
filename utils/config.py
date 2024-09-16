@@ -12,9 +12,9 @@ ORIGINAL_CSV = "ibm_4y.csv"
 DATA_FILE = "clean_cc_data.csv" 
 DATABASE = os.getenv('DATABASE')
 MLFLOW_URI = 'http://127.0.0.1:5000'
-REGISTERED_MODEL_NAME = 'fraud_analysis'
+REGISTERED_MODEL_NAME = 'cc_transactions_sqntl'
 MLFLOW_REGISTERED_MODEL = os.path.join('mlruns/models', REGISTERED_MODEL_NAME)
-
+EXPERIMENT_NAME = 'cc_frauds'
 DATABASE_FULL_PATH = f'sqlite:///{DATA_FOLDER}/fraud_transactions.db'
 
 # model architecture paramseters:
@@ -27,7 +27,7 @@ PARAMS = {
     'train_feature_size': (15,),   #(xtrain.shape[-1],)),
     'layer_size': [16, 32,32,16],
     'activation1': 'relu',
-    'nr_of_layers': 4
+    'nr_of_layers': 1
     }
 
 # model metrics: 

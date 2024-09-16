@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from utils.config import PARAMS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME
+from utils.config import PARAMS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME, EXPERIMENT_NAME
 import os
 import numpy as np
 import tempfile
@@ -146,10 +146,10 @@ def load_model_weights(model, train_params):
     model.load_weights(initial_weights)
     return model
 
-def model_re_trainer(model, data, params, train_params, output_bias_generator=True, callback=None):
+def model_re_trainer(model, data, params, train_params,exp_name= EXPERIMENT_NAME, output_bias_generator=True, callback=None):
     """ loads the model architecture for new training, with the new
     data for the relvant period"""
-    
+    mlflow.set_experiment(exp_name)
     with mlflow.start_run() as run:    
         if output_bias_generator:
             output_bias = tf.keras.initializers.Constant(params['output_bias']) 
@@ -222,9 +222,8 @@ def re_train_pipeline(date= '2019-01-01', model_version='latest'):
     update_params_output_bias(PARAMS, data)
     model = load_saved_model(version=model_version)
     model = load_model_weights(model, PARAMS)
-    #new_trained_model = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
     eval_resutls = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
-    #return predict(new_trained_model, data)
+    
     return eval_resutls
 
 def predict_pipeline(date= '2019-01-01', model_version='latest'):

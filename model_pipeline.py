@@ -311,7 +311,6 @@ def reverse_transformer(transformer, x):
     return transformer.inverse_transform(x)
     
 
-
 if __name__ == "__main__":
     params = PARAMS
     data = FraudDataProcessor(os.path.join(DATA_PATH, ORIGINAL_CSV))
