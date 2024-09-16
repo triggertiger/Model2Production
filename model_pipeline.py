@@ -75,7 +75,7 @@ class FraudDataProcessor:
         
     def data_df_prep(self):
         """processes the dataframe columnss to desired format.
-        returns sorted dataframe. if end date is set, returns dataframe
+        returns sorted dataframe. if end_date is set, returns dataframe
         until end date"""
 
         logging.info("pre-processing training data") 
@@ -315,7 +315,7 @@ def reverse_transformer(transformer, x):
 if __name__ == "__main__":
     params = PARAMS
     data = FraudDataProcessor(os.path.join(DATA_PATH, ORIGINAL_CSV))
-    #data.end_date = ('2018-01-01')
+    
     data.data_df_prep() 
     data.data_splitter()
     

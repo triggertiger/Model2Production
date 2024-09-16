@@ -18,17 +18,13 @@ from sklearn.metrics import ConfusionMatrixDisplay
 import tensorflow as tf
 import mlflow
 
-
-
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="[%(filename)s:%(lineno)s - %(funcName)20s() ] %(asctime)s - %(levelname)s - %(message)s"
 )
 # mlflow uri
-
 mlflow.set_tracking_uri(uri=MLFLOW_URI)
 logging.info(f'data_prep: tracking uri: {mlflow.get_tracking_uri()}')
-
 
 class FraudDataProcessor:
     """
@@ -116,13 +112,12 @@ class FraudDataProcessor:
 
         self.train_ds = tf.data.Dataset.from_tensor_slices((xtrain, ytrain))
         self.test_ds = tf.data.Dataset.from_tensor_slices((self.xpred, ytest))
-    
+           
 def update_params_output_bias(params, data: FraudDataProcessor):
     """update the output bias in the external params, 
     according to the data features for the purpose of training
     with the relevant output bias"""
-    params['output_bias'] == data.output_bias
-    
+    params['output_bias'] == data.output_bias    
 
 def load_saved_model(version='latest'):
     start = time.time()
@@ -172,7 +167,6 @@ def model_re_trainer(model, data, params, train_params, output_bias_generator=Tr
             mode='max',
             restore_best_weights=True
         )
-
         callback_list = [early_stopping]
 
         # placeholder for Tensorboard if needed. no validation dataset in re-training
