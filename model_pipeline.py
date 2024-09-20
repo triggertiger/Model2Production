@@ -7,8 +7,8 @@ import os
 import tempfile
 import datetime
 import logging
-from utils.config import DATA_PATH, ORIGINAL_CSV, PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI
-
+from utils.config import ORIGINAL_CSV, PARAMS, MODEL_METRICS, TRAIN_PARAMS, MLFLOW_URI, EXPERIMENT_NAME
+from experiments_pipeline import TrainPipeline
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder, LabelEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
@@ -313,13 +313,12 @@ def reverse_transformer(transformer, x):
 
 if __name__ == "__main__":
     params = PARAMS
-    data = FraudDataProcessor(os.path.join(DATA_PATH, ORIGINAL_CSV))
+    data = TrainPipeline()
     
-    data.data_df_prep() 
-    data.data_splitter()
-    
-    params['output_bias'] = data.initial_bias
-    mlflow_run('fraud_detection', params=params, train_params=TRAIN_PARAMS, metricas=MODEL_METRICS, data=data, run_name='larger_layer_take2')
+    data.training_data_generator() 
+        
+    params['output_bias'] = data.output_bias
+    mlflow_run(EXPERIMENT_NAME, params=params, train_params=TRAIN_PARAMS, metricas=MODEL_METRICS, data=data, run_name='test')
     #new_model = load_saved_model()
     #new_model.summary()
     
