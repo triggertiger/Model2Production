@@ -146,6 +146,7 @@ def model_trainer(model, data, params, train_params, callback=None):
     model.fit(
         train_ds,
         batch_size=train_params['batch_size'],
+        epochs=train_params['epochs'],
         validation_data=val_ds,
         verbose=1,
         callbacks=callback_list
@@ -163,12 +164,11 @@ def mlflow_experiment_pipeline(exp_name, data, params, train_params, model_metri
     mlflow.set_experiment(exp_name)
     
     with mlflow.start_run(run_name=run_name):
-        # mlflow.log_params(params)
-        # mlflow.log_params(train_params)
+        mlflow.log_params(params)
+        mlflow.log_params(train_params)
         mlflow.set_tags(tags)
         
         model = model_generator(data, params, model_metrics)
-        print(model.summary())
         model = model_trainer(model, data, params, train_params)
         test_ds = data.test_ds.batch(train_params['batch_size']).prefetch(2)
         
@@ -208,8 +208,6 @@ if __name__ == '__main__':
     data = TrainPipeline()
     data.training_data_generator()
     PARAMS['output_bias'] = update_params_output_bias(PARAMS, data)
-    #model = model_generator(data, PARAMS, MODEL_METRICS)  
-    #model_trainer(model, data, PARAMS, TRAIN_PARAMS)
-    results = mlflow_experiment_pipeline(EXPERIMENT_NAME, data, PARAMS, TRAIN_PARAMS, MODEL_METRICS, run_name='one_layer_test')
+    results = mlflow_experiment_pipeline(EXPERIMENT_NAME, data, PARAMS, TRAIN_PARAMS, MODEL_METRICS, run_name='four_layers_size32')
 
     

@@ -146,7 +146,7 @@ def load_model_weights(model, train_params):
     model.load_weights(initial_weights)
     return model
 
-def model_re_trainer(model, data, params, train_params,exp_name= EXPERIMENT_NAME, output_bias_generator=True, callback=None):
+def model_re_trainer(model, data, params, train_params,exp_name=EXPERIMENT_NAME, output_bias_generator=True, callback=None):
     """ loads the model architecture for new training, with the new
     data for the relvant period"""
     mlflow.set_experiment(exp_name)

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/307002666649653425/1e2ebf90fa2348ddb31846c646c368fa/artifacts
+end_time: 1726844649279
+entry_point_name: ''
+experiment_id: '307002666649653425'
+lifecycle_stage: active
+run_id: 1e2ebf90fa2348ddb31846c646c368fa
+run_name: one_layer
+run_uuid: 1e2ebf90fa2348ddb31846c646c368fa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726843969173
+status: 3
+tags: []
+user_id: Pinkey
