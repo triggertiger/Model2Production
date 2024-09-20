@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/183902783295206530/a9abef879d374fbc96254970def8369e/artifacts
+deleted_time: 1726841921630
+end_time: 1726828841438
+entry_point_name: ''
+experiment_id: '183902783295206530'
+lifecycle_stage: deleted
+run_id: a9abef879d374fbc96254970def8369e
+run_name: one_layer_test
+run_uuid: a9abef879d374fbc96254970def8369e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726828761409
+status: 3
+tags: []
+user_id: Pinkey

@@ -1,5 +1,5 @@
 from data_prep_pipeline import FraudDataProcessor, update_params_output_bias, load_model_weights
-from utils.config import PARAMS, TRAIN_PARAMS, MODEL_METRICS, EXPERIMENT_NAME
+from utils.config import MLFLOW_URI, PARAMS, TRAIN_PARAMS, MODEL_METRICS, EXPERIMENT_NAME
 import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
@@ -108,7 +108,6 @@ def model_generator(data, params, model_metrics, output_bias_generator=True):
     return model
 
 def model_trainer(model, data, params, train_params, callback=None):
-
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor='val_prc',
         verbose=1,
@@ -134,7 +133,7 @@ def model_trainer(model, data, params, train_params, callback=None):
     
     model.load_weights(initial_weights)
 
-    logging.info('starting training')
+    logging.info('data created. creating model')
 
     if params['output_bias'] is None:
         model.layers[-1].bias.assign([0.0])
@@ -154,16 +153,21 @@ def model_trainer(model, data, params, train_params, callback=None):
 
     return model
 
-def mlflow_experiment_pipeline(exp_name, model, data, params, train_params, model_metrics, run_name='no name was set'):
+def mlflow_experiment_pipeline(exp_name, data, params, train_params, model_metrics, run_name=None):
+    uri = MLFLOW_URI
+    mlflow.set_tracking_uri(uri)
+    
     tags = {k: v for k, v in params.items()}
+    
+    mlflow.tensorflow.autolog()
     mlflow.set_experiment(exp_name)
     
     with mlflow.start_run(run_name=run_name):
-        mlflow.log_params(params)
-        mlflow.log_params(train_params)
+        # mlflow.log_params(params)
+        # mlflow.log_params(train_params)
         mlflow.set_tags(tags)
-        mlflow.tensorflow.autolog()
         
+        model = model_generator(data, params, model_metrics)
         print(model.summary())
         model = model_trainer(model, data, params, train_params)
         test_ds = data.test_ds.batch(train_params['batch_size']).prefetch(2)
@@ -173,22 +177,23 @@ def mlflow_experiment_pipeline(exp_name, model, data, params, train_params, mode
 
         for name, value in zip(model.metrics_names, results):
             print(name, ': ', value)
-
-        # generate confusion matrix and chart .png (need to handle the fig closing in thread)
-        # def get_conf_matrix(test_ds=test_ds):
-        #     """
-        #     generates confusion matrix chart. 
-        #     handles the opening of a figure in a thread and tensorflow.autolog() not recording data
-        #     """
-        #     matplotlib.use('Agg')
-        #     cm = ConfusionMatrixDisplay.from_predictions(
-        #         np.concatenate([y for x, y in test_ds], axis=0), 
-        #         predictions > 0.2
-        #         )
-        #     mlflow.log_figure(cm.figure_, 'test_confusion_matrix.png')
-        #     plt.close(cm.figure_)
-        #     return
-        # get_conf_matrix()
+        logging.info(f'prediction scores:\n\n {predictions}')
+        mlflow.tensorflow.log_model(model, "models")
+        #generate confusion matrix and chart .png (need to handle the fig closing in thread)
+        def get_conf_matrix(test_ds=test_ds):
+            """
+            generates confusion matrix chart. 
+            handles the opening of a figure in a thread and tensorflow.autolog() not recording data
+            """
+            matplotlib.use('Agg')
+            cm = ConfusionMatrixDisplay.from_predictions(
+                np.concatenate([y for x, y in test_ds], axis=0), 
+                predictions > 0.2
+                )
+            mlflow.log_figure(cm.figure_, 'test_confusion_matrix.png')
+            plt.close(cm.figure_)
+            return
+        get_conf_matrix()
         return results 
         
 def allocate_predictions(predictions, threshold=0.5):
@@ -203,8 +208,8 @@ if __name__ == '__main__':
     data = TrainPipeline()
     data.training_data_generator()
     PARAMS['output_bias'] = update_params_output_bias(PARAMS, data)
-    model = model_generator(data, PARAMS, MODEL_METRICS)  
+    #model = model_generator(data, PARAMS, MODEL_METRICS)  
     #model_trainer(model, data, PARAMS, TRAIN_PARAMS)
-    results = mlflow_experiment_pipeline(EXPERIMENT_NAME, model, data, PARAMS, TRAIN_PARAMS, MODEL_METRICS)#, run_name='1layer_25epochs')
+    results = mlflow_experiment_pipeline(EXPERIMENT_NAME, data, PARAMS, TRAIN_PARAMS, MODEL_METRICS, run_name='one_layer_test')
 
     
