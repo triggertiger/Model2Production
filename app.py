@@ -1,7 +1,6 @@
 from flask import Flask, request, flash, jsonify, redirect, url_for, render_template, session
 from flask_restful import Api 
 import data_prep_pipeline
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -18,7 +17,9 @@ from utils.sql_data_queries import TrainDatesHandler
 from dash import Dash, html, dash_table 
 import mlflow
 import multiprocessing
+from dotenv import load_dotenv
 
+load_dotenv('.env')
 
 # Configure logging
 logging.basicConfig(
@@ -34,7 +35,8 @@ def start_mlflow_server():
 # starting Flask app and db connection, dash server
 app = Flask(__name__)
 app.secret_key = '123'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 app.app_context().push()

@@ -1,46 +1,49 @@
 # Fraud Analysis Prediction and Automation
-XXXXXXXXX add links to different parts
-descriptions 
-instructions
-details
+This is a show case project for developing and using the machine learning systems at the various stages of ML lifecycle.
+
+- [description](#description)
+- [instructions](#instructions)
+- [structure and tools](#structure-and-tools)
+- [Use Case, storyline and details](#use-case-storyline-and-details)
+
 ## Description
-This is a show case project for developing and using the machine learning systems at the various stages of machine learning life cycle.
+The core model is an MLP neural network that predicts fraudulant credit card transactions, based on the [IBM Credit card Transactions Database](https://www.kaggle.com/datasets/ealtman2019/credit-card-transactions?resource=download&select=credit_card_transactions-ibm_v2.csv).
+The model is automatically retrained on a monthly basis, based on new data, using a scheduled Github Actions workflow.
+The project includes a UI that allows authorized users to log in and vie monthly predictions for potential fraud.  
 
-Trained MLP neural network that predicts fraud credit card transactions, based on the IBM Credit card Transactions Database.
-
-The UI that allows the user to log in and watch monthly predictions for the fraud cases.  
-
-## Structure and tools
-The project includes the following steps and tools: 
-- Exploratory Data Analysis (mainly in notebooks with Pandas)
-- Data conversion to sql with SQLAlchemy, and data pre-processing
-- A basic MLP binary-classifier with Keras
-- Model experiments tracking, and model registry with MlFlow
-- User interface to call predictions, using Flask, Plotly-Dash-Table, SQL-Alchemy and a minimal bootstrap 
-- Data storage on Google Drive
-- Re-training automation with git-actions workflow, triggered on a schedule to update the model with new monthly data. Currently set to every hour, for convenience. 
+## Structure and Tools
+The project consists of the following steps, using different ML tools and frameworks: 
+- **Exploratory Data Analysis (EDA)**: primarily using Jupyter notebooks and Pandas
+- **Data management**: Data is converted and stored as SQL, using SQLAlchemy.
+- **Data pre-processing**: written in Python classes.
+- **Modeling**: A binary-classifier MLP neural network with Keras
+- **Experiment tracking and model registry** Model performance and registry is tracked by MlFlow
+- **User interface (UI)**: Built using Flask and Plotly-Dash-Table, with minimal Bootstrap styling. 
+- **Data storage** the data files are stored on Google Drive
+- **Automation** The model is automatically retrained on new data, using Github Actions workflow, triggered on a schedule. Currently set hourly, for demo purposes. 
 
 ## Use Case, storyline and details: 
-This project uses the IBM Credit Card Fraud Transactions Dataset. The dataset contains 6 years of transactions with the lables Fraud or not_fraud. Data for 4 years has been used for the project, starting 1.1.2017, due to the size of the file.
+This project uses the IBM Credit Card Fraud Transactions Dataset, which contains 6 years of transactions with the labels Fraud or not_fraud. Data for 4 years has been used for the project, starting 1.1.2017, due to the size of the file.
 The model is initially trained until 31.12.2018, and retrains through the workflow on additional monthly data.
 
-The UI includes viewing rights for two predefined users: Pinkey and Brain.
-The user credentials for the predictions view
+The UI includes viewing rights for two predefined users: Pinkey and Brain. The user credentials for the predictions view only in the Project Presentation that was submitted. 
 
 
 ## Instructions:
-clone the repo
+1. clone the repo
 
-install the requirements:
-`pip install -r requirements.txt`
+2. install the requirements:
+    `pip install -r requirements.txt`
 
-**note:** make sure that tensorflow version is  <2.15, otherwise the logging with mlflow can be problematic. 
+    **note:** make sure that tensorflow version is  <2.15, to avoid potential issues with MLFlow logging. 
 
-To automatically re-clone the repo and get the updated data after every retrain, run: 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+3. To automatically re-clone the repo and get the updated data after every retrain, run: 
+    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-To run the UI: 
-`python app.py` 
+4. Run the UI locally: 
+    run: `python app.py` 
+    On your internet browser, go to https:localhost:8080, 
+    log in as one of the authorized users, and follow the instructions. 
 
 ## To do 
 create a cron job to pull the repo
@@ -52,15 +55,11 @@ Project flowchart
 Project tree
 add here an image
 Make git on schedule
+Add env.example
+
+do I have to install google cloud https://cloud.google.com/sdk/docs/install???
+ 
 
 
 
-
-
-install google cloud https://cloud.google.com/sdk/docs/install
-tensorflow < 2.15 
-
-
-project structure
-how to reset database dates
 
