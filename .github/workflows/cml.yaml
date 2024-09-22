@@ -1,6 +1,6 @@
 name: connect to drive
 on: 
-  push
+  # push
   # schedule:
   #   - [push]
   #   #- cron: "*/16 * * * *"  # Run every 2 minutes

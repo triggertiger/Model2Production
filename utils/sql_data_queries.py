@@ -4,6 +4,9 @@ from sqlalchemy import create_engine, MetaData, update, Table, select
 import os
 from datetime import datetime
 
+from dotenv import load_dotenv
+load_dotenv('.env')
+
 # get data from sql database: 
 class TrainDatesHandler:
     """

@@ -12,6 +12,9 @@ notebooks/mlruns/*
 
 # experimental notebooks
 app.ipynb
+mlruns_old/
+model_pipeline.py
+
 
 # cache
 __pycache__/

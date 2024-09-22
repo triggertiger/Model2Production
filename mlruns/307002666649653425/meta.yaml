@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/307002666649653425
+creation_time: 1726843431336
+experiment_id: '307002666649653425'
+last_update_time: 1726843431336
+lifecycle_stage: active
+name: mlp_fraud

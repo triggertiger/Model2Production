@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 import logging
 from utils.sql_data_queries import TrainDatesHandler
-from utils.config import PARAMS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME
+from utils.config import PARAMS, TRAIN_PARAMS, MLFLOW_URI, REGISTERED_MODEL_NAME, EXPERIMENT_NAME
 import os
 import numpy as np
 import tempfile
@@ -18,17 +18,13 @@ from sklearn.metrics import ConfusionMatrixDisplay
 import tensorflow as tf
 import mlflow
 
-
-
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="[%(filename)s:%(lineno)s - %(funcName)20s() ] %(asctime)s - %(levelname)s - %(message)s"
 )
 # mlflow uri
-
 mlflow.set_tracking_uri(uri=MLFLOW_URI)
 logging.info(f'data_prep: tracking uri: {mlflow.get_tracking_uri()}')
-
 
 class FraudDataProcessor:
     """
@@ -116,13 +112,12 @@ class FraudDataProcessor:
 
         self.train_ds = tf.data.Dataset.from_tensor_slices((xtrain, ytrain))
         self.test_ds = tf.data.Dataset.from_tensor_slices((self.xpred, ytest))
-    
+           
 def update_params_output_bias(params, data: FraudDataProcessor):
     """update the output bias in the external params, 
     according to the data features for the purpose of training
     with the relevant output bias"""
-    params['output_bias'] == data.output_bias
-    
+    params['output_bias'] == data.output_bias    
 
 def load_saved_model(version='latest'):
     start = time.time()
@@ -151,10 +146,10 @@ def load_model_weights(model, train_params):
     model.load_weights(initial_weights)
     return model
 
-def model_re_trainer(model, data, params, train_params, output_bias_generator=True, callback=None):
+def model_re_trainer(model, data, params, train_params,exp_name=EXPERIMENT_NAME, output_bias_generator=True, callback=None):
     """ loads the model architecture for new training, with the new
     data for the relvant period"""
-    
+    mlflow.set_experiment(exp_name)
     with mlflow.start_run() as run:    
         if output_bias_generator:
             output_bias = tf.keras.initializers.Constant(params['output_bias']) 
@@ -172,7 +167,6 @@ def model_re_trainer(model, data, params, train_params, output_bias_generator=Tr
             mode='max',
             restore_best_weights=True
         )
-
         callback_list = [early_stopping]
 
         # placeholder for Tensorboard if needed. no validation dataset in re-training
@@ -228,9 +222,8 @@ def re_train_pipeline(date= '2019-01-01', model_version='latest'):
     update_params_output_bias(PARAMS, data)
     model = load_saved_model(version=model_version)
     model = load_model_weights(model, PARAMS)
-    #new_trained_model = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
     eval_resutls = model_re_trainer(model, data, PARAMS, TRAIN_PARAMS)
-    #return predict(new_trained_model, data)
+    
     return eval_resutls
 
 def predict_pipeline(date= '2019-01-01', model_version='latest'):
