@@ -29,18 +29,19 @@ The model is initially trained until 31.12.2018, and retrains through the workfl
 The UI includes viewing rights for two predefined users: Pinkey and Brain. The user credentials for the predictions view only in the Project Presentation that was submitted. 
 
 
-## Instructions:
+## Usage Instructions:
 1. clone the repo
 
 2. install the requirements:
     `pip install -r requirements.txt`
 
     **note:** make sure that tensorflow version is  <2.15, to avoid potential issues with MLFlow logging. 
+3. Download the file: run: `curl -L "https://drive.usercontent.google.com/download?id={file_ID}&confirm=xxx" -o ./tmp/fraud_transactions.db`
 
-3. To automatically re-clone the repo and get the updated data after every retrain, run: 
+4. To automatically re-clone the repo and get the updated data after every retrain, run: 
     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-4. Run the UI locally: 
+5. Run the UI locally: 
     run: `python app.py` 
     On your internet browser, go to http://127.0.0.1:8080, 
     log in as one of the authorized users, and follow the instructions. 
@@ -53,7 +54,7 @@ Make a workflow cycle - delete the model versions
 make MLFLOW user login
 Make git on schedule
 update env.example
-create a python file for 'make 6 years to 4 years' 
+            create a python file for 'make 6 years to 4 years' 
 add set_database bash code file. including gitignore for db files. 
 
 Project flowchart
@@ -62,6 +63,17 @@ Project tree
 do I have to install google cloud https://cloud.google.com/sdk/docs/install???
  
 
+## Reproduction:
+1. Clone the repository
+2. Install requirements `pip install -r requirements.txt`
+3. Download the [dataset](https://www.kaggle.com/datasets/ealtman2019/credit-card-transactions/data?select=credit_card_transactions-ibm_v2.csv) from Kaggle and save it under `/data/6y_ibm.csv`
+    > You can use the kaggle-cli tool for this with kaggle-cli tool (installed with the requirements), by running: 
+    'kg dataset -u <username> -p <password> -o <owner> -d <dataset>`. 
+4. Run: utils/set_database.sh which will execute:
+    - utils/clean_csv.py
+    - utils/db_population.py
+    - utils/db_setup.py
 
-
-
+5. You're all set! 
+    for experiments with new model parameters, run experiments_pipeline.py. 
+    Continue as with the user instructions. 

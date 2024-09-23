@@ -173,6 +173,7 @@ dash_app.layout = html.Div([html.H2("Please log in to access predictions")])
 @app.route("/predict", methods=["POST", "GET"])
 @login_required
 def serve_dash_table():
+    headline_style={'textAlign': 'center'}
     frauds_df = predict_current_month()
     print('starting prediction')
     dash_app.layout = [
@@ -180,9 +181,9 @@ def serve_dash_table():
             html.H1(
                 children=f'Suspicious Transactions for the period: {session["predict_month"]}/{session["predict_year"]}',
                 
-                style={'textAlign': 'center'}
+                style=headline_style
             ),
-            html.H6(f' there are {frauds_df.shape[0]} suspicious transactions for this month'),
+            html.H3(f' there are {frauds_df.shape[0]} suspicious transactions for this month', style=headline_style),
             html.Br(),
         ]),
         html.Div([
@@ -234,7 +235,7 @@ if __name__ =="__main__":
     multiprocessing.set_start_method('fork')
     mlflow_process = multiprocessing.Process(target=start_mlflow_server)
     mlflow_process.start()
-    app.run(debug=False, host="0.0.0.0", port=8080)
+    app.run(debug=True, host="0.0.0.0", port=8080)
     mlflow_process.join()
     print('process terminated')
     

@@ -1,15 +1,26 @@
 import pandas as pd
 import os
 import logging
-from config import DATA_PATH, DATA_FILE, PARAMS, ORIGINAL_CSV
+from config import DATA_FILE, PARAMS#, ORIGINAL_CSV
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
+ORIGINAL_CSV = 'whatever.csv'
 def data_df_prep(csv, DATA_FILE):
-    data = pd.read_csv(csv)
+    
+    try:
+        data = pd.read_csv(csv)
+        initial_file = None
+    except FileNotFoundError:
+        
+        initial_file = os.path.join(os.getenv('DATA_PATH'),'ibm_6y.csv')
+        if os.path.exists(initial_file):
+            data = pd.read_csv(initial_file)
+        else: 
+            logging.info(f'File {initial_file} not found. Please make sure to save the downloaded data under the correct filename')
+            return
     logging.info("data loaded") 
     
     """This function is sorting the dataframe columns by date, for easier data processing pipeline. 
@@ -43,9 +54,14 @@ def data_df_prep(csv, DATA_FILE):
     # drop unnecessary column time
     data.drop(columns=["time"], inplace=True)
     try:
+        if initial_file:
+
+            print(data.head())
+            data = data.loc[data['year'] > 2016]
+            print(data.head())
         data.to_csv(os.path.join(DATA_FILE,"clean_cc_data.csv"), index_label=False, mode="x")
     except FileExistsError:
-        logging.info(f'File exists in folder {DATA_PATH}. Delete it before saving again. \n dataframe created.')
+        logging.info(f'File exists in folder {os.getenv("DATA_PATH")}. Delete it before saving again. \n dataframe created.')
         return data
     
     return data
@@ -53,9 +69,9 @@ def data_df_prep(csv, DATA_FILE):
 if __name__ == "__main__":
     params = PARAMS
     
-    #data = data_df_prep(os.path.join(DATA_PATH, ORIGINAL_CSV), DATA_PATH) 
+    data = data_df_prep(os.path.join(os.getenv('DATA_PATH'), ORIGINAL_CSV), os.getenv('DATA_PATH')) 
     loaded = pd.read_csv(f'data/{DATA_FILE}')
     loaded.index = pd.to_datetime(loaded.index)
-    short_df = loaded.loc[loaded[loaded.index < pd.to_datetime('2020-01-01 00:04:00')]]
+    print(loaded.head())
     
     
