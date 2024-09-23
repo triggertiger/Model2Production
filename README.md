@@ -32,30 +32,36 @@ The UI includes viewing rights for two predefined users: Pinkey and Brain. The u
 ## Usage Instructions:
 1. clone the repo
 
-2. install the requirements:
+2. create a virtual environment and download the requirements
+    `python3.9 -m venv model2production`
+    `source model2production/bin/activate`
     `pip install -r requirements.txt`
 
     **note:** make sure that tensorflow version is  <2.15, to avoid potential issues with MLFlow logging. 
-3. Download the file: run: `curl -L "https://drive.usercontent.google.com/download?id={file_ID}&confirm=xxx" -o ./tmp/fraud_transactions.db`
 
-4. To automatically re-clone the repo and get the updated data after every retrain, run: 
+3. You need to update an .env file, based on `env.example`, with the relevant example variables, available in the project presentation file.
+
+4. Download the data file: run: `curl -L "https://drive.usercontent.google.com/download?id=${DRIVE_FILE_ID}&confirm=xxx" -o ./tmp/fraud_transactions.db`
+    ***the curly brackets {} need to stay in the command***
+
+5. To automatically pull the repo and get the updated data after every retrain, run: 
     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-5. Run the UI locally: 
+6. Run the UI locally: 
     run: `python app.py` 
     On your internet browser, go to http://127.0.0.1:8080, 
     log in as one of the authorized users, and follow the instructions. 
 
 ## To do 
 create a cron job to pull the repo
-Make a workflow cycle - delete the model versions
+Make git on schedule
+add set_database bash code file. including adding gitignore for db files. 
+            update env.example
+            make MLFLOW user login
+            Make a workflow cycle - delete the model versions
             fix the bootstrap UI
             fix flash messages on UI
-make MLFLOW user login
-Make git on schedule
-update env.example
             create a python file for 'make 6 years to 4 years' 
-add set_database bash code file. including gitignore for db files. 
 
 Project flowchart
 Project tree
@@ -73,7 +79,7 @@ do I have to install google cloud https://cloud.google.com/sdk/docs/install???
     - utils/clean_csv.py
     - utils/db_population.py
     - utils/db_setup.py
-
+5. In order to run experiments, make sure to update the environment variables in the .env file. 
 5. You're all set! 
     for experiments with new model parameters, run experiments_pipeline.py. 
     Continue as with the user instructions. 
