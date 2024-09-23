@@ -13,8 +13,8 @@ DATA_FILE = "clean_cc_data.csv"
 DATABASE = os.getenv('DATABASE')
 
 # MLFLOW
-MLFLOW_URI = 'http://127.0.0.1:5000'
-REGISTERED_MODEL_NAME = 'cc_transactions_sqntl'
+MLFLOW_URI = 'http://127.0.0.1:5001'
+REGISTERED_MODEL_NAME = 'mlp_fraud_4'
 MLFLOW_REGISTERED_MODEL = os.path.join('mlruns/models', REGISTERED_MODEL_NAME)
 EXPERIMENT_NAME = 'mlp_fraud'
 DATABASE_FULL_PATH = f'sqlite:///{DATA_FOLDER}/fraud_transactions.db'
@@ -27,9 +27,9 @@ PARAMS = {
     'output_bias': None,
     'dropout': 0.5,
     'train_feature_size': (15,),   #(xtrain.shape[-1],)),
-    'layer_size': [32, 32, 32, 32],
+    'layer_size': [32, 32, 32], #, 32],
     'activation1': 'relu',
-    'nr_of_layers': 4
+    'nr_of_layers': 3
     }
 
 # model metrics: 

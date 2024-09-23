@@ -208,6 +208,6 @@ if __name__ == '__main__':
     data = TrainPipeline()
     data.training_data_generator()
     PARAMS['output_bias'] = update_params_output_bias(PARAMS, data)
-    results = mlflow_experiment_pipeline(EXPERIMENT_NAME, data, PARAMS, TRAIN_PARAMS, MODEL_METRICS, run_name='four_layers_size32')
+    results = mlflow_experiment_pipeline(EXPERIMENT_NAME, data, PARAMS, TRAIN_PARAMS, MODEL_METRICS, run_name='three_layers_size32')
 
     
