@@ -42,20 +42,22 @@ The UI includes viewing rights for two predefined users: Pinkey and Brain. The u
 
 4. Run the UI locally: 
     run: `python app.py` 
-    On your internet browser, go to https:localhost:8080, 
+    On your internet browser, go to http://127.0.0.1:8080, 
     log in as one of the authorized users, and follow the instructions. 
 
 ## To do 
 create a cron job to pull the repo
 Make a workflow cycle - delete the model versions
-fix the bootstrap UI
-fix flash messages on UI
+            fix the bootstrap UI
+            fix flash messages on UI
 make MLFLOW user login
+Make git on schedule
+update env.example
+create a python file for 'make 6 years to 4 years' 
+add set_database bash code file. including gitignore for db files. 
+
 Project flowchart
 Project tree
-add here an image
-Make git on schedule
-Add env.example
 
 do I have to install google cloud https://cloud.google.com/sdk/docs/install???
  

@@ -19,17 +19,8 @@
         </select>
         <p><input type="submit" value="Show predictions"/></p>
     </form>
-        
-
-    
     <br>
-    <form action="/predict_current" method="GET">
-        <p><input type="submit" value="Show data predictions"/></p>
-    </form>
-    <form action="/retrain" method="POST">
-        <p><input type="submit" value="go to next month"/></p>
-    </form>
-  
+   
 <a href="{{ url_for('logout') }}">press here to log out</a>
 
 {% endblock %}

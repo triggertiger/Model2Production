@@ -1,42 +1,46 @@
 from flask import Flask, request, flash, jsonify, redirect, url_for, render_template, session
 from flask_restful import Api 
 import data_prep_pipeline
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from utils.config import MLFLOW_URI, MLFLOW_REGISTERED_MODEL
+from utils.config import MLFLOW_URI, MLFLOW_REGISTERED_MODEL, DATABASE_FULL_PATH, DATABASE
 
 from sqlalchemy.ext.automap import automap_base
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, length
 from datetime import datetime
 import os
-import logging
+import logging 
 from utils.sql_data_queries import TrainDatesHandler
 from dash import Dash, html, dash_table 
 import mlflow
+from mlflow import cli
 import multiprocessing
 from dotenv import load_dotenv
-
 load_dotenv('.env')
+
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="[%(filename)s:%(lineno)s - %(funcName)20s() ] %(asctime)s - %(levelname)s - %(message)s"
 )
 # starting MLFlow server
-#mlflow.set_tracking_uri(MLFLOW_URI)
-mlflow_client = mlflow.MlflowClient(tracking_uri=MLFLOW_URI)
+#mlflow_client = mlflow.MlflowClient(tracking_uri=MLFLOW_URI)
 
+mlflow.set_tracking_uri(MLFLOW_URI)
 def start_mlflow_server():
-    mlflow.cli.server(["--port", "5000"])
-
+    cli.server(["--host", "0.0.0.0", "--port", "5001"])  #"--host", "0.0.0.0", 
+    
+    
 # starting Flask app and db connection, dash server
 app = Flask(__name__)
 app.secret_key = '123'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE")
+database_full_path = os.path.abspath('./tmp/fraud_transactions.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{database_full_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 app.app_context().push()
@@ -95,19 +99,17 @@ def login():
         
         if user_logging_in:
             if bcrypt.check_password_hash(user_logging_in.password_hash, form.password.data):
-                flash('Logged in successfully.')
+                flash('Logged in successfully', 'info')
                 login_user(user_logging_in)
                 return redirect(url_for('userpage'))
-            else:
-                flash('')
             
-    flash('wrong username or password')
     return render_template("login.html", form=form)
     
 @app.route('/logout', methods=["POST", "GET"])
 @login_required
 def logout():
      logout_user()
+     flash('You are logged out')
      return redirect(url_for("login"))
 
 @app.route("/userpage", methods=["POST", "GET"])
@@ -120,8 +122,12 @@ def userpage():
     last_train_date_row = db.session.query(Dates).filter(Dates.id==last_date_index).first()
 
     # set list of dates for dropdown:
-    last_date_index = len(os.listdir(MLFLOW_REGISTERED_MODEL)) - 1      # this folder has all models + one yaml file
+    try:
+        last_date_index = len(os.listdir(MLFLOW_REGISTERED_MODEL)) - 1      # this folder has all models + one yaml file
     
+    except FileNotFoundError:
+        return('under construction: model not yet set')
+
     datesrow = db.session.query(Dates.train_date).all()
     # unpack row tuples:
     alldates = [item[0] for item in datesrow]
@@ -176,6 +182,7 @@ def serve_dash_table():
                 
                 style={'textAlign': 'center'}
             ),
+            html.H6(f' there are {frauds_df.shape[0]} suspicious transactions for this month'),
             html.Br(),
         ]),
         html.Div([
@@ -224,10 +231,10 @@ def retrain():
 
 if __name__ =="__main__":
         
-    app.run(debug=True, host="0.0.0.0", port=8080)
     multiprocessing.set_start_method('fork')
     mlflow_process = multiprocessing.Process(target=start_mlflow_server)
     mlflow_process.start()
+    app.run(debug=False, host="0.0.0.0", port=8080)
     mlflow_process.join()
     print('process terminated')
     
