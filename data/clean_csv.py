@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import logging
-from config import DATA_FILE, PARAMS#, ORIGINAL_CSV
+from docker_config import DATA_FILE, PARAMS#, ORIGINAL_CSV
 
 # Configure logging
 logging.basicConfig(

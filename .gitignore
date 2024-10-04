@@ -10,6 +10,9 @@
 notebooks/mlruns/*
 *.sqlite3
 
+
+
+
 # experimental notebooks
 app.ipynb
 mlruns_old/
@@ -18,6 +21,7 @@ model_pipeline.py
 
 # cache
 __pycache__/
+utils/__pycache__
 */__pycache__/*
 *.pyc
 

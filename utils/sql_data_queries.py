@@ -1,9 +1,8 @@
 import pandas as pd
 from sqlalchemy import create_engine, MetaData, update, Table, select
-#from utils.config import DATABASE_FULL_PATH
-import os
 from datetime import datetime
-
+from utils.config import DATABASE
+import os
 from dotenv import load_dotenv
 load_dotenv('.env')
 
@@ -14,7 +13,7 @@ class TrainDatesHandler:
     outputs data in different dataframes for the cases of - 
     initial training, for retraining on additional periods, and for predictions"""
     def __init__(self, date=None, username="Pinkey", database=os.getenv('DATABASE')):
-        
+      
 # data engine:
         self.database = database
         self.engine = create_engine(self.database, echo=False)
@@ -33,7 +32,7 @@ class TrainDatesHandler:
     @property 
     def date_for_new_training(self):
         """returns the newly updated date for retraining"""
-        query = f'SELECT name, last_training_date FROM {self.users_table} WHERE name == "{self.username}"'
+        query = f"SELECT name, last_training_date FROM {self.users_table} WHERE name = '{self.username}';"
         users_df = pd.read_sql(query, self.engine)
         date = users_df['last_training_date'][0]
         return self.dates_df['train_date'][date]
@@ -41,7 +40,7 @@ class TrainDatesHandler:
     @property
     def training_date_index(self):
         """returns the index of the date at the user table for updating"""
-        query = f'SELECT name, last_training_date FROM {self.users_table} WHERE name == "{self.username}"'
+        query = f'SELECT name, last_training_date FROM {self.users_table} WHERE name == "{self.username}";'
         users_df = pd.read_sql(query, self.engine)
         return users_df['last_training_date'][0]
         

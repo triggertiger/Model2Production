@@ -5,10 +5,11 @@ from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase, Mapped, mappe
 from typing import Optional
 import pandas as pd
 import os
-from config import DATABASE_FULL_PATH, DATA_FILE, DATA_FOLDER, TRAIN_DATES, USERS
+from docker_config import DATABASE_FULL_PATH, DATA_FILE, DATA_FOLDER, TRAIN_DATES, USERS
 
 # database engine:
-engine = create_engine(DATABASE_FULL_PATH, echo=False)
+psql_db = 'postgresql://inbalshalev@localhost:5432/fraud_transactions'
+engine = create_engine(psql_db, echo=False)
 
 # create a dataframe, reset the index from datetime index to continous int
 fileToRead = os.path.join(DATA_FOLDER, DATA_FILE)
@@ -23,22 +24,23 @@ short = df[[ 'user', 'amount']][:15]
 short.reset_index(inplace=True)
 short.rename(columns={'index': 'id'}, inplace=True)
 print(df.columns)
-# convert to sqlite (no primary key generatead with .to_sql())
-df.to_sql(
-    'cc_transactions', 
-    engine,
-    index=False, 
-    #dtype=short.dtypes,
-    schema=None, 
-    method='multi',  
-    chunksize=10000,
-    if_exists='replace')
 
-# test select for transactions:
-with engine.connect() as conn:
-   res = conn.execute(text("SELECT * FROM cc_transactions LIMIT 5"))
-for row in res:
-    print(row)
+# convert to sqlite (no primary key generatead with .to_sql())
+# df.to_sql(
+#     'transactions', 
+#     engine,
+#     index=False, 
+#     #dtype=short.dtypes,
+#     schema=None, 
+#     method='multi',  
+#     chunksize=15000,
+#     if_exists='replace')
+
+# # test select for transactions:
+# with engine.connect() as conn:
+#    res = conn.execute(text("SELECT * FROM transactions LIMIT 5"))
+# for row in res:
+#     print(row)
 
 metadata = MetaData()
 metadata.create_all(engine)
@@ -51,7 +53,7 @@ class TrainDates(Base):
     __tablename__ = 'training_dates'
     id: Mapped[int] = mapped_column(primary_key=True)
     train_date: Mapped[str] = mapped_column(String(30))
-    #users: Mapped[List['User']]= relationship()
+  
 
     def __repr__(self):
         return f'TrainDate(id={self.id}, train_dates={self.train_date})'
@@ -75,18 +77,18 @@ session = Session(engine)
 
 # insert data into tables: 
 new_users = []
-for u in USERS:
-    name = u['name']
-    password_hash = u['password']
-    user = User(name=name, password_hash=password_hash, last_training_date=0)
-    new_users.append(user)
-
-session.add_all(new_users)
-session.commit()
- 
 dates = TRAIN_DATES['dates'].to_numpy()
 new_dates = [TrainDates(train_date=str(d)[:10]) for d in dates]
 session.add_all(new_dates)  
+session.commit()
+
+for u in USERS:
+    name = u['name']
+    password_hash = u['password']
+    user = User(name=name, password_hash=password_hash, last_training_date=1)
+    new_users.append(user)
+
+session.add_all(new_users)
 session.commit()
 session.close()
 

@@ -1,9 +1,9 @@
 import sqlalchemy
 from sqlalchemy import Column, Integer, String, Float, Table, create_engine
 from sqlalchemy.orm import Session, sessionmaker, DeclarativeBase
-from config import DATABASE_FULL_PATH
-
-engine = create_engine(DATABASE_FULL_PATH, echo=True)
+from docker_config import DATABASE_FULL_PATH
+import os
+engine = create_engine(os.getenv('DATABASE'), echo=True)
 
 class Base(DeclarativeBase):
     pass
