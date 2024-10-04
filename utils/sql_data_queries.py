@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine, MetaData, update, Table, select
 from datetime import datetime
-from utils.config import DATABASE
+#from utils.config import DATABASE
 import os
 from dotenv import load_dotenv
 load_dotenv('.env')
@@ -76,7 +76,7 @@ class TrainDatesHandler:
         last_data_date = pd.Timestamp(self.date_for_new_training)# + pd.DateOffset(months=1)
         datestring = last_data_date.strftime('%Y-%m-%d %H:%M:%S')
         
-        query = f'SELECT * FROM {self.transactions_table} WHERE USER < "{datestring}";'
+        query = f"SELECT * FROM {self.transactions_table} WHERE time_stamp_datetime < '{datestring}'::timestamp;"
         df = pd.read_sql(query, self.engine)
         df.drop(columns=['time_stamp_datetime'], inplace=True)
 
@@ -105,7 +105,7 @@ class TrainDatesHandler:
 
 if __name__ == "__main__":
     user_data = TrainDatesHandler(date='2019-01-01')
-    df = user_data.get_prediction_data()
+    df = user_data.get_retraining_data()
     print(df.head())
     #user_data.update_db_last_train_date()
 
