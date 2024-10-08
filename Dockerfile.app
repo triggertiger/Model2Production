@@ -5,7 +5,7 @@ COPY requirements_app.txt /app/
 RUN pip install --upgrade pip
 RUN pip install -r app/requirements_app.txt
 
-COPY templates /app/
+COPY ./templates /app/templates/
 COPY app.py /app/
 
 WORKDIR /app

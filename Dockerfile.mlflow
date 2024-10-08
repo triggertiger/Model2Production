@@ -3,12 +3,12 @@ FROM python:3.9-slim-bullseye
 COPY requirements_mlflow.txt /mlflow/
 RUN pip install -r mlflow/requirements_mlflow.txt
 
-COPY  ./mlruns /mlflow/
-COPY  ./mlartifacts /mlflow/
-COPY  ./utils /mlflow/
+COPY  ./mlruns /mlflow/mlruns
+COPY  ./mlartifacts /mlflow/mlartifacts
+COPY  ./utils /mlflow/utils
 COPY  ./retrain_model.py /mlflow/
 
 WORKDIR /mlflow
 
 #CMD ["python", "retrain_model.py"]
-ENTRYPOINT [ "python" ]
+CMD ["echo", "mlflow running"]
