@@ -6,7 +6,7 @@ services:
     expose: 
       - 5001
     environment:
-      - name=value
+      DATABASE: postgresql://postgres:password1@database:5432/fraud_transactions
     
     depends_on:
       - database
