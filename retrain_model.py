@@ -1,6 +1,6 @@
 from utils.sql_data_queries import TrainDatesHandler
 from utils.config import REGISTERED_MODEL_NAME
-from load_from_drive import gcp_auth_download
+#from load_from_drive import gcp_auth_download
 import utils.data_prep_pipeline as data_prep_pipeline
 import os, shutil
 import json

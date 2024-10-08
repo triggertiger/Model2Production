@@ -81,15 +81,23 @@ class Users(db.Model, UserMixin):
     last_training_date = db.Column(db.Integer)
 
 # 3.2 setting auto-map for the rest of the db tables - 
-# metadata = MetaData()
-# metadata.reflect(db.engine)
+metadata = MetaData()
+metadata.reflect(bind=db.engine)
+logging.info(f'###############daatabase classes: {metadata.tables.keys()}')
+
+# # Test
+# test_df = TrainDatesHandler()
+# df = test_df.get_all_data().head()
+# print(df)
 
 
-ReflectedBase = automap_base()
+ReflectedBase = automap_base(metadata=metadata)
 ReflectedBase.prepare(autoload_with=db.engine)
 
 logging.info(f'###############daatabase classes: {ReflectedBase.classes.keys()}')
+logging.info(f'###############daatabase address: {db.engine.url}')
 
+ReflectedBase.metadata.create_all(db.engine)
 Dates = ReflectedBase.classes.training_dates
 Transactions = ReflectedBase.classes.transactions
 
@@ -146,9 +154,7 @@ def userpage():
     
     # handle date selection: 
     selected_date = '2019-01-01'
-    logging.info('log before if')
     if request.method == 'POST':
-        logging.info('log inside if')
         selected_date = request.form.get('dropdown')
         logging.info(f'selected_date is updated to: {selected_date}')
         
