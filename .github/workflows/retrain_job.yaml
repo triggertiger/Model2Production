@@ -2,6 +2,7 @@ name: retrain fraud model job
 on:
   schedule:
     - cron: "*/15 * * * *"
+  workflow_dispatch:
 env: 
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PROJECT_NAME: model_production
