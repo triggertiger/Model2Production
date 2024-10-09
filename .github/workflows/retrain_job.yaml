@@ -31,7 +31,7 @@ jobs:
       - name: commit and push to Dockerhub
         run: |
           docker commit mlflow_container triggertiger/model_production:mlflow
-          docker push myuser/myproject:mlflow
+          docker push triggertiger/model_production:mlflow
 
 
       # - name: commit and push changes to github
