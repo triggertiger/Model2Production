@@ -10,5 +10,4 @@ COPY  ./retrain_model.py /mlflow/
 
 WORKDIR /mlflow
 
-#CMD ["python", "retrain_model.py"]
-CMD ["echo", "mlflow running"]
+CMD ["python", "retrain_model.py"]
