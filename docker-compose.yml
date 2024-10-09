@@ -8,7 +8,9 @@ services:
       - 5001
     environment:
       DATABASE: postgresql://postgres:password1@database:5432/fraud_transactions
-    
+    command: >
+      bash -c "mlflow server --host 0.0.0.0 --port 5001 & sleep 5 && python retrain_model.py"
+
     depends_on:
       - database
     volumes:
