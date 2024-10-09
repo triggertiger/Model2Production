@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.mlflow
+    container_name: mlflow_container
     expose: 
       - 5001
     environment:
