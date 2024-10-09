@@ -10,4 +10,5 @@ COPY  ./retrain_model.py /mlflow/
 
 WORKDIR /mlflow
 
-CMD ["python", "retrain_model.py"]
+ENTRYPOINT [ "python" ] 
+CMD ["retrain_model.py"]

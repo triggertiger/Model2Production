@@ -26,7 +26,7 @@ jobs:
       - name: build and run containers
         run: | 
           docker compose up -d database mlflow 
-          docker exec mlflow_container python /mlflow/model_retrain.py
+          
       
       - name: commit and push to Dockerhub
         run: |
