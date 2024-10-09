@@ -2,7 +2,7 @@ name: retrain fraud model job
 on: 
   # push
   schedule:
-    - cron: "*/30 * * * *"  # Run every 30 minutes
+    - cron: "*/20 * * * *"  # Run every 30 minutes
   workflow_dispatch:        # allows manual activation (for testing)
 env: 
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
