@@ -1,13 +1,15 @@
 from flask import Flask, request, flash, jsonify, redirect, url_for, render_template, session
 from flask_restful import Api 
-import data_prep_pipeline
+import utils.data_prep_pipeline as data_prep_pipeline
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from utils.config import MLFLOW_URI, MLFLOW_REGISTERED_MODEL, DATABASE_FULL_PATH, DATABASE
+from utils.config import MLFLOW_URI, MLFLOW_REGISTERED_MODEL, DATABASE
 
+from sqlalchemy import text, MetaData
+from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, length
@@ -39,8 +41,8 @@ def start_mlflow_server():
 app = Flask(__name__)
 app.secret_key = '123'
 
-database_full_path = os.path.abspath('./tmp/fraud_transactions.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{database_full_path}'
+logging.info(os.getenv('DATABASE'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE') 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 app.app_context().push()
@@ -70,19 +72,34 @@ def load_user(user_id):
     return db.session.get(Users, int(user_id))
 
 # there is a conflict with sqlalchemy database reflect and the requirements of the Flask login module. 
-# therefore need to set Users instance manually
-# 3. setting class schema 
+# therefore Users instance must be set manually
+# 3.1 setting class schema 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
     password_hash = db.Column(db.String(64), nullable=False)
     last_training_date = db.Column(db.Integer)
 
-# 3.1 setting auto-map for the rest of the db tables - 
-ReflectedBase = automap_base()
+# 3.2 setting auto-map for the rest of the db tables - 
+metadata = MetaData()
+metadata.reflect(bind=db.engine)
+logging.info(f'###############daatabase classes: {metadata.tables.keys()}')
+
+# # Test
+# test_df = TrainDatesHandler()
+# df = test_df.get_all_data().head()
+# print(df)
+
+
+ReflectedBase = automap_base(metadata=metadata)
 ReflectedBase.prepare(autoload_with=db.engine)
-Transactions = ReflectedBase.classes.transactions
+
+logging.info(f'###############daatabase classes: {ReflectedBase.classes.keys()}')
+logging.info(f'###############daatabase address: {db.engine.url}')
+
+ReflectedBase.metadata.create_all(db.engine)
 Dates = ReflectedBase.classes.training_dates
+Transactions = ReflectedBase.classes.transactions
 
 
 @app.route('/')
@@ -137,9 +154,7 @@ def userpage():
     
     # handle date selection: 
     selected_date = '2019-01-01'
-    logging.info('log before if')
     if request.method == 'POST':
-        logging.info('log inside if')
         selected_date = request.form.get('dropdown')
         logging.info(f'selected_date is updated to: {selected_date}')
         
@@ -235,7 +250,7 @@ if __name__ =="__main__":
     multiprocessing.set_start_method('fork')
     mlflow_process = multiprocessing.Process(target=start_mlflow_server)
     mlflow_process.start()
-    app.run(debug=True, host="0.0.0.0", port=8080)
+    app.run(debug=False, host="0.0.0.0", port=8080)
     mlflow_process.join()
     print('process terminated')
     

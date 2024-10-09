@@ -1,4 +1,4 @@
-from data_prep_pipeline import FraudDataProcessor, update_params_output_bias, load_model_weights
+from utils.data_prep_pipeline import FraudDataProcessor, update_params_output_bias, load_model_weights
 from utils.config import MLFLOW_URI, PARAMS, TRAIN_PARAMS, MODEL_METRICS, EXPERIMENT_NAME
 import matplotlib.pyplot as plt
 import matplotlib

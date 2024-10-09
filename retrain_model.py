@@ -1,16 +1,16 @@
 from utils.sql_data_queries import TrainDatesHandler
 from utils.config import REGISTERED_MODEL_NAME
-from load_from_drive import gcp_auth_download
-import data_prep_pipeline
+#from load_from_drive import gcp_auth_download
+import utils.data_prep_pipeline as data_prep_pipeline
 import os, shutil
 import json
 
-gcp_auth_download()
+#gcp_auth_download()
 database = os.getenv('DATABASE')
 
-
-current_version = len(os.listdir(f'mlruns/models/{REGISTERED_MODEL_NAME}')) -1      # (excluding the .yaml file)
-
+# get the current version number of the model (excluding the .yaml file)
+current_version = len(os.listdir(f'mlruns/models/{REGISTERED_MODEL_NAME}')) -1      
+print(f'current version: {current_version}')
 # restart re-training period if the period for prediction (1/2019-3/2020) is over:  
 if current_version == 15:
     versions_list = range(2,16)

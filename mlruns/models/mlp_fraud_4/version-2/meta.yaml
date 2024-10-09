@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1728066426684
+current_stage: None
+description: ''
+last_updated_timestamp: 1728066426684
+name: mlp_fraud_4
+run_id: 213b6ec8008444b48a805320e2e0c895
+run_link: ''
+source: mlflow-artifacts:/307002666649653425/213b6ec8008444b48a805320e2e0c895/artifacts/model
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/307002666649653425/213b6ec8008444b48a805320e2e0c895/artifacts/model
+user_id: null
+version: 2

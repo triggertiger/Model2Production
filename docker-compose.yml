@@ -1,0 +1,59 @@
+services:
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    container_name: mlflow_container
+    expose: 
+      - 5001
+    environment:
+      DATABASE: postgresql://postgres:password1@database:5432/fraud_transactions
+    
+    depends_on:
+      - database
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+      - ./mlartifacts:/mlflow/mlartifacts
+      - ./utils:/mlflow/utils
+      #- postgres_data:/var/lib/postgresql/data     
+
+  database:
+    #container_name: database
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./postgres_dump:/docker-entrypoint-initdb.d
+      
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      # - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB} 
+      - POSTGRES_PASSWORD=password1
+      #- PGDATA=./postgres_dump/
+    expose:
+      - 5432
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    depends_on:
+      - database
+      - mlflow
+    ports: 
+      - '8080:8080'
+      - '5001:5001'
+      # - '5432:5432'
+    environment:
+      #POSTGRES_USER: ${POSTGRES_USER}
+      DATABASE: postgresql://postgres:password1@database:5432/fraud_transactions
+    volumes:
+      - ./mlruns:/app/mlruns
+      - ./mlartifacts:/app/mlartifacts
+      - ./utils:/app/utils
+      #- postgres_data:/app/data
+
+volumes:
+  postgres_data:
+
+
