@@ -71,9 +71,6 @@ def load_user(user_id):
     #return db.session.query(Users).get(int(user_id))
     return db.session.get(Users, int(user_id))
 
-# there is a conflict with sqlalchemy database reflect and the requirements of the Flask login module. 
-# therefore Users instance must be set manually
-# 3.1 setting class schema 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
