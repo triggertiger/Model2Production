@@ -1,4 +1,4 @@
-name: retrain fraud model job
+name: retrain model job
 on:
   schedule:
     - cron: "2 * * * *"
@@ -28,7 +28,11 @@ jobs:
 
       - name: build and run containers
         run: | 
-          docker compose up --build
+          docker compose up -d --build
+      
+      - name: check PostgreSQL tables
+        run: |
+          docker compose exec -e PGPASSWORD=password1 database psql -U postgres -d fraud_transactions -c '\dt'
           
       
       - name: commit and push to Dockerhub
