@@ -6,7 +6,7 @@ on:
 
 env: 
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PROJECT_NAME: model_production
+  # DOCKER_PROJECT_NAME: model_production
   POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 jobs:
@@ -33,8 +33,8 @@ jobs:
       
       - name: commit and push to Dockerhub
         run: |
-          docker commit app_contianer triggertiger/model_production:latest
-          docker push triggertiger/model_production:latest
+          docker commit app_contianer ${DOCKER_USERNAME}/model_production:latest
+          docker push ${DOCKER_USERNAME}/model_production:latest
 
       - name: cleanup
         run: |
