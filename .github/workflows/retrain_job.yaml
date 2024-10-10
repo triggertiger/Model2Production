@@ -30,6 +30,9 @@ jobs:
         run: | 
           docker compose up -d --build
       
+      - name: Print database logs
+        run: docker compose logs database
+        
       - name: check PostgreSQL tables
         run: |
           docker compose exec -e PGPASSWORD=password1 database psql -U postgres -d fraud_transactions -c '\dt'
