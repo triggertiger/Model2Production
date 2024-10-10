@@ -11,7 +11,6 @@ jobs:
   retrain_model:
     runs-on: ubuntu-latest
     steps:
-    # checkout code to the runner
       - name: checkout code
         uses: actions/checkout@v4.1.7
 
