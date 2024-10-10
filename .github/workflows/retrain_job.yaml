@@ -6,9 +6,7 @@ on:
 
 env: 
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  # DOCKER_PROJECT_NAME: model_production
-  # POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-  # POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  
 jobs:
   retrain_model:
     runs-on: ubuntu-latest
@@ -28,8 +26,12 @@ jobs:
          
       - name: build and run containers
         run: | 
-          docker compose up --build
-          
+          docker compose up -d --build
+
+      - name: check PostgreSQL tables
+      run: |
+        docker compose exec -e PGPASSWORD="password1" database psql -U postgres -d fraud_transactions -c '\dt'
+    
       
       - name: commit and push to Dockerhub
         run: |
