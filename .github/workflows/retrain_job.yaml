@@ -35,7 +35,7 @@ jobs:
         
       - name: check PostgreSQL tables
         run: |
-          docker compose exec -e PGPASSWORD=password1 database psql -U postgres -d fraud_transactions -c '\dt'
+          docker exec  database -e POSTGRES_PASSWORD=password1 psql -U postgres -d fraud_transactions -c '\dt'
           
       
       - name: commit and push to Dockerhub
