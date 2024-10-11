@@ -33,9 +33,9 @@ jobs:
       - name: Print database logs
         run: docker compose logs database
         
-      - name: check PostgreSQL tables
-        run: |
-          docker exec  database -e POSTGRES_PASSWORD=password1 psql -U postgres -d fraud_transactions -c '\dt'
+      # - name: check PostgreSQL tables
+      #   run: |
+      #     docker exec  database -e POSTGRES_PASSWORD=password1 psql -U postgres -d fraud_transactions -c '\dt'
           
       
       - name: commit and push to Dockerhub
