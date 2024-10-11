@@ -28,7 +28,9 @@ jobs:
 
       - name: build and run containers
         run: | 
-          docker compose up -d --build
+          docker compose up --build
+          docker ps
+
       
       - name: Print database logs
         run: docker compose logs database
