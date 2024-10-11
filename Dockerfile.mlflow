@@ -1,14 +1,17 @@
 FROM python:3.9-slim-bullseye
 
-COPY requirements_mlflow.txt /mlflow/
-RUN pip install -r mlflow/requirements_mlflow.txt
+COPY requirements_mlflow.txt /src/
+RUN pip install --upgrade pip
+RUN pip install -r src/requirements_mlflow.txt
 
-COPY  ./mlruns /mlflow/mlruns
-COPY  ./mlartifacts /mlflow/mlartifacts
-COPY  ./utils /mlflow/utils
-COPY  ./retrain_model.py /mlflow/
+COPY  ./mlruns /src/mlruns
+COPY  ./mlartifacts /src/mlartifacts
+COPY  ./utils /src/utils
+COPY  ./retrain_model.py /src/
+COPY ./templates /src/templates/
+COPY app.py /src/
 
-WORKDIR /mlflow
+WORKDIR /src
 
 ENTRYPOINT [ "python" ] 
-CMD ["retrain_model.py"]
+CMD ["app.py"]
