@@ -26,4 +26,3 @@ utils/__pycache__
 *.pyc
 
 tmp/
-postgres_dump/
