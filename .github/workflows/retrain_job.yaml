@@ -22,8 +22,8 @@ jobs:
       # Install Git LFS
       - name: Install Git LFS
         run: |
-          apt-get update
-          apt-get install git-lfs
+          sudo apt-get update
+          sudo apt-get install git-lfs
           git lfs install
           git lfs pull
           ls
