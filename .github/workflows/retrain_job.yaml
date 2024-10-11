@@ -23,15 +23,15 @@ jobs:
       - name: setup docker  
         uses: docker/setup-buildx-action@v3
          
-      # - name: build and run containers
-      #   run: | 
-      #     docker compose up -d database mlflow 
+      - name: build and run containers
+        run: | 
+          docker compose up -d database mlflow 
           
       
-      # - name: commit and push to Dockerhub
-      #   run: |
-      #     docker commit mlflow_container triggertiger/model_production:mlflow
-      #     docker push triggertiger/model_production:mlflow
+      - name: commit and push to Dockerhub
+        run: |
+          docker commit mlflow_container triggertiger/model_production:mlflow
+          docker push triggertiger/model_production:mlflow
 
 
       # - name: commit and push changes to github
