@@ -1,4 +1,4 @@
 services:
   app:
     entrypoint: ["/bin/bash"]
-    command: ["-c", "mlflow server --host 0.0.0.0 --port 5001 & MLFLOW_PID=$! && sleep 15 && python retrain_model.py && kill $MLFLOW_PID"]
+    command: ["-c", "mlflow server --host 0.0.0.0 --port 5001 &  sleep 15 && python retrain_model.py"]
