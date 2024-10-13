@@ -43,20 +43,15 @@ jobs:
       - name: build and run containers
         run: | 
           docker compose up --build --abort-on-container-exit || true
-
-
-      
-      - name: Print database logs
-        run: docker compose down
-        
-      # - name: check PostgreSQL tables
-      #   run: |
-      #     docker exec  database -e POSTGRES_PASSWORD=password1 psql -U postgres -d fraud_transactions -c '\dt'
-          
+          docker commit app_contianer ${DOCKER_USERNAME}/model_production:latest
+          docker push ${DOCKER_USERNAME}/model_production:latest
+          docker compose down
+      # - name: Print database logs
+      #   run: docker compose down
+      # docker commit app_contianer ${DOCKER_USERNAME}/model_production:latest
       
       - name: commit and push to Dockerhub
         run: |
-          docker commit app_contianer ${DOCKER_USERNAME}/model_production:latest
           docker push ${DOCKER_USERNAME}/model_production:latest
       - name: cleanup
         run: |
