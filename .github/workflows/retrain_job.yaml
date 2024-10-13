@@ -43,7 +43,8 @@ jobs:
       - name: build and run containers
         run: | 
           docker compose up --build --abort-on-container-exit || true
-          docker commit app_contianer ${DOCKER_USERNAME}/model_production:latest
+          echo "Commiting and pushing to docker hub:"
+          docker commit app_container ${DOCKER_USERNAME}/model_production:latest
           docker push ${DOCKER_USERNAME}/model_production:latest
           docker compose down
       # - name: Print database logs
