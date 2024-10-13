@@ -10,7 +10,7 @@ load_dotenv('.env')
 DATA_FOLDER = os.getenv('DATA_FOLDER')
 ORIGINAL_CSV = "ibm_4y.csv"
 DATA_FILE = "clean_cc_data.csv" 
-DATABASE = " postgresql://inbalshalev@localhost:5432/fraud_transactions"
+DATABASE = "postgresql://inbalshalev@localhost:5432/fraud_transactions"
 
 # MLFLOW
 MLFLOW_URI = 'http://127.0.0.1:5001'

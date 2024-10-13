@@ -30,8 +30,10 @@ services:
     ports: 
       - '8080:8080'
       - '5001:5001'
+    entrypoint: ["python"]
+    command: ["app.py"]
     environment:
-      # DATABASE: postgresql://postgres:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      
       DATABASE: postgresql://postgres:password1@database:5432/fraud_transactions
      
 volumes:

@@ -6,14 +6,12 @@ on:
 
 env: 
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  # DOCKER_PROJECT_NAME: model_production
-  # POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-  # POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+ 
 jobs:
   retrain_model:
     runs-on: ubuntu-latest
     steps:
-    # checkout code to the runner
+    
       - name: checkout code
         uses: actions/checkout@v4.1.7
         with:
@@ -47,13 +45,7 @@ jobs:
           docker commit app_container ${DOCKER_USERNAME}/model_production:latest
           docker push ${DOCKER_USERNAME}/model_production:latest
           docker compose down
-      # - name: Print database logs
-      #   run: docker compose down
-      # docker commit app_contianer ${DOCKER_USERNAME}/model_production:latest
       
-      - name: commit and push to Dockerhub
-        run: |
-          docker push ${DOCKER_USERNAME}/model_production:latest
       - name: cleanup
         run: |
           docker compose down

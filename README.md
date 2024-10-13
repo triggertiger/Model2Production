@@ -30,7 +30,11 @@ The UI includes viewing rights for two predefined users: Pinkey and Brain. The u
 
 
 ## Usage Instructions:
-1. clone the repo
+1. Install Docker
+2. Install git-lfs 
+3. create a project folder in the desired location. for example: mkdir ******
+4. clone the repo: 
+4. 
 
 2. create a virtual environment and download the requirements
     `python3.9 -m venv model2production`
@@ -53,8 +57,7 @@ The UI includes viewing rights for two predefined users: Pinkey and Brain. The u
     log in as one of the authorized users, and follow the instructions. 
 
 ## To do 
-create a cron job to pull the repo
-Make git on schedule
+
 add set_database bash code file. including adding gitignore for db files. 
             update env.example
             make MLFLOW user login

@@ -1,7 +1,6 @@
 import pandas as pd
 from sqlalchemy import create_engine, MetaData, update, Table, select
 from datetime import datetime
-#from utils.config import DATABASE
 import os
 from dotenv import load_dotenv
 load_dotenv('.env')
