@@ -37,3 +37,4 @@ else:
     eval_results = data_prep_pipeline.re_train_pipeline(date=date)    
     print(json.dumps(eval_results))
 
+exit(0)

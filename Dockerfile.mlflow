@@ -8,6 +8,8 @@ COPY  ./mlruns /src/mlruns
 COPY  ./mlartifacts /src/mlartifacts
 COPY  ./utils /src/utils
 COPY  ./retrain_model.py /src/
+# COPY  ./hello.py /src/
+# COPY  ./run_stop_server.sh /src/
 COPY ./templates /src/templates/
 COPY app.py /src/
 
