@@ -11,7 +11,7 @@ class TrainDatesHandler:
     starts and queries an SQLAlchemy engine.
     outputs data in different dataframes for the cases of - 
     initial training, for retraining on additional periods, and for predictions"""
-    def __init__(self, date=None, username="Pinkey", database=os.getenv('DATABASE')):
+    def __init__(self, date=None, username="user1", database=os.getenv('DATABASE')):
       
 # data engine:
         self.database = database

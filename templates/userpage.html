@@ -5,9 +5,10 @@
     <h3>Your review data is ready until the date: {{ last_train_date }} </h3> 
         <br>
         <p>Which period would you like to watch next?</p>
-    <form action="#" method="POST">
-
-        <label for="dropdown">Choose the next date from the list (this might take up to 5 minutes)</label><br>
+        <form action="#" method="POST">
+            
+        <p>please note, prediction might take a few minutes.</p>
+        <label for="dropdown">Choose the next date from the list</label><br>
         <select id="date_picker" name="dropdown">
             <option value="{{dates[0] if dates else '' }}" selected>{{dates[0] if dates else '' }}</option>
             {% for dat in dates[1:] %}

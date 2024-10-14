@@ -61,6 +61,6 @@ TRAIN_DATES = {'dates':
 }
 
 USERS = [
-        {'name': 'Pinkey', 'password': os.getenv('PINKEYKEY'), 'training_date': 1},
-         {'name': 'Brain', 'password': os.getenv('BRAINKEY'), 'training_date': 1}
+        {'name': 'user1', 'password': os.getenv('USER1KEY'), 'training_date': 1},
+         {'name': 'user2', 'password': os.getenv('USER2KEY'), 'training_date': 1}
          ]

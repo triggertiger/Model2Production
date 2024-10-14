@@ -60,7 +60,20 @@ def add_primary_key(database=database, engine=engine, meta=meta):
     
 
 if __name__=="__main__":
-    add_primary_key()
-    add_datetime()
-    update_pass_hash()
-
+    # add_primary_key()
+    # add_datetime()
+    # update_pass_hash()
+    def update_pass_hash(engine=engine, meta=meta):
+        users = Table('users', meta, autoload_with=engine)
+        user1 = os.getenv('USER1HASH')
+        print(user1)
+        user2 = os.getenv('USER2HASH')
+        print(user2)
+        update_stmt1 = (
+                    update(users).where(users.c.name == 'user1').values(password_hash=str(user1))
+                    )  
+        update_stmt2 = (
+                    update(users).where(users.c.name == 'user2').values(password_hash=user2)
+                    )
+        execute_func(engine, update_stmt1)
+        execute_func(engine, update_stmt2)
