@@ -80,19 +80,9 @@ class Users(db.Model, UserMixin):
 # 3.2 setting auto-map for the rest of the db tables - 
 metadata = MetaData()
 metadata.reflect(bind=db.engine)
-logging.info(f'###############daatabase classes: {metadata.tables.keys()}')
-
-# # Test
-# test_df = TrainDatesHandler()
-# df = test_df.get_all_data().head()
-# print(df)
-
 
 ReflectedBase = automap_base(metadata=metadata)
 ReflectedBase.prepare(autoload_with=db.engine)
-
-logging.info(f'###############daatabase classes: {ReflectedBase.classes.keys()}')
-logging.info(f'###############daatabase address: {db.engine.url}')
 
 ReflectedBase.metadata.create_all(db.engine)
 Dates = ReflectedBase.classes.training_dates
@@ -239,7 +229,6 @@ def train_new_data(session=session):
 def retrain():
     update_last_training_date_in_db()
     eval_results = train_new_data()
-    # return f'{eval_results} '
     return jsonify(eval_results)
 
 if __name__ =="__main__":
