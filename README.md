@@ -26,7 +26,7 @@ The project consists of the following steps, using different ML tools and framew
 This project uses the IBM Credit Card Fraud Transactions Dataset, which contains 6 years of transactions with the labels Fraud or not_fraud. Data for 4 years has been used for the project, starting 1.1.2017, due to the size of the file.
 The model is initially trained until 31.12.2018, and retrains through the workflow on additional monthly data.
 
-The UI includes viewing rights for two predefined users: user1 and user2. The user credentials for the predictions view only in the Project Presentation that was submitted. 
+The UI includes viewing rights for two predefined users. The user credentials for the predictions-view are available only in the Project Presentation that was submitted. 
 
 
 ## Usage Instructions:
@@ -34,34 +34,33 @@ The UI includes viewing rights for two predefined users: user1 and user2. The us
 2. Install git-lfs 
 3. create a project folder in the desired location. for example: mkdir ******
 4. clone the repo: *******link********* (pay attention: the repo is relatively large)
-5. Pull the init.sql file using git-lfs: `git lfs pull`
+5. Inside the project main directory, pull the init.sql file using git-lfs: `git lfs pull`
 6. Pull the images from Docker hub:
     a. `docker pull triggertiger/model_production:postgres` (might be that 'sudo' is required in case that permission is denied)
     b. `docker pull triggertiger/model_production:latest`
 7. Run: `docker compose -f docker-compose.yml up`
-8. In the first run, building the database might take several minutes. 
-9. The app is running on localhost, on port 8080. go to http://127.0.0.1:8080 in your browser, follow the 
+8. In the first run, building the database might take several minutes.
+9. The app is running on localhost, on port 8080. Go to http://127.0.0.1:8080 in your browser, follow the screens and view the predictions. 
 
 ## Reproduction: 
 
-2. create a virtual environment and download the requirements
+1. create a virtual environment and download the requirements
     `python3.9 -m venv model2production`
     `source model2production/bin/activate`
     `pip install -r requirements_mlflow.txt`
 
     **note:** make sure that tensorflow version is  <2.15, to avoid potential issues with MLFlow logging. 
 
-WhatDoWeDoTonight
 
-3. Download the [dataset](https://www.kaggle.com/datasets/ealtman2019/credit-card-transactions/data?select=credit_card_transactions-ibm_v2.csv) from Kaggle and save it under `/data/6y_ibm.csv`
+2. Download the [dataset](https://www.kaggle.com/datasets/ealtman2019/credit-card-transactions/data?select=credit_card_transactions-ibm_v2.csv) from Kaggle and save it under `/data/6y_ibm.csv`
     > You can use the kaggle-cli tool for this with kaggle-cli tool (installed with the requirements), by running: 
     'kg dataset -u <username> -p <password> -o <owner> -d <dataset>`. 
-4. Make sure you have Postgres running
+3. Make sure you have Postgres running
 4. Run: data/set_database.sh which will execute:
     - data/clean_csv.py
     - data/db_population.py
     - data/db_setup.py
 5. In order to run experiments, make sure to update the environment variables in the .env file. you can run: `python experiments_pipeline.py`
-5. You're all set! 
+6. You're all set! 
     for experiments with new model parameters, run experiments_pipeline.py. 
     Continue as with the user instructions. 

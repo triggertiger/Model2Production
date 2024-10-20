@@ -1,7 +1,7 @@
 services:
   database:
     container_name: database
-    image: postgres
+    image: triggertiger/model_production:postgres
     restart: always
     volumes:
       - ./postgres_dump:/docker-entrypoint-initdb.d
