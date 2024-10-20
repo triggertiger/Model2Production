@@ -194,7 +194,6 @@ def serve_dash_table():
             )])
         ])
     ]
-    # update_last_training_date_in_db()
     return dash_app.index()
 
 def update_last_training_date_in_db(session=session):
@@ -211,9 +210,7 @@ def update_last_training_date_in_db(session=session):
     session['last_train_date'] = dt
     session['predict_month'] = dt.month
     session['predict_year'] = dt.year
-    
-    print(f'session after update session: {session["last_train_date"]}')
-    
+        
     return f'new date: {new_date_index}'
 
 def train_new_data(session=session):
@@ -222,7 +219,6 @@ def train_new_data(session=session):
     
     # update session variable for next prediction: 
     session['model_version'] += 1
-    print(type(eval_results))
     return eval_results
 
 @app.route('/retrain', methods=['POST', 'GET'])
