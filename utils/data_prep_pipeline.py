@@ -28,11 +28,12 @@ logging.info(f'data_prep: tracking uri: {mlflow.get_tracking_uri()}')
 
 class FraudDataProcessor:
     """
-    Receives: dataframe with data from the sql. sql handler provides one df for training
-    from beginning (1/1/17) until the stated date, and one prediction dataset for one month
-    after the date. (for example: training < 1.1.19; prediction = JAN 2019)
-    processes transactions data as datafram from the sql engine to a dataframe
-    handles the data pre-processing for training, retraining and predictions"""
+    Receives: dataframe with data from sql db. 
+    SqlHandler provides one df for training from beginning (1/1/17) until the stated date, 
+    and one prediction dataset for one month after the last training date (for example: 
+    training < 1.1.19; prediction = JAN 2019), 
+    and then handles the data pre-processing pipeline for training, retraining and predictions.
+    Returns: Tensorflow datasets."""
 
     # pipeline instances:
     label_enc = LabelEncoder()

@@ -13,5 +13,6 @@ COPY app.py /src/
 
 WORKDIR /src
 RUN echo 'Opening predictions app'
+
 ENTRYPOINT [ "python" ] 
 CMD ["app.py"]

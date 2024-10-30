@@ -7,39 +7,40 @@ This is a show case project for developing and using the machine learning system
 - [Use Case, storyline and details](#use-case-storyline-and-details)
 
 ## Description
-The core model is an MLP neural network that predicts fraudulant credit card transactions, based on the [IBM Credit card Transactions Database](https://www.kaggle.com/datasets/ealtman2019/credit-card-transactions?resource=download&select=credit_card_transactions-ibm_v2.csv).
-The model is automatically retrained on a monthly basis, based on new data, using a scheduled Github Actions workflow.
-The project includes a UI that allows authorized users to log in and vie monthly predictions for potential fraud.  
+The core model is a neural network that predicts fraudulant credit card transactions, based on the [IBM Credit card Transactions Database](https://www.kaggle.com/datasets/ealtman2019/credit-card-transactions?resource=download&select=credit_card_transactions-ibm_v2.csv).
+The model is automatically retrained on a monthly basis, based on new data, using a scheduled Github Actions workflow. Additionally, the project includes a UI that allows authorized users to log in and vie monthly predictions for potential fraud.  
 
 ## Structure and Tools
 The project consists of the following steps, using different ML tools and frameworks: 
-- **Exploratory Data Analysis (EDA)**: primarily using Jupyter notebooks and Pandas
-- **Data management**: Data is converted and stored as SQL, using SQLAlchemy.
-- **Data pre-processing**: written in Python classes.
-- **Modeling**: A binary-classifier MLP neural network with Keras
-- **Experiment tracking and model registry** Model performance and registry is tracked by MlFlow
-- **User interface (UI)**: Built using Flask and Plotly-Dash-Table, with minimal Bootstrap styling. 
-- **Data storage** the data files are stored on Google Drive
-- **Automation** The model is automatically retrained on new data, using Github Actions workflow, triggered on a schedule. Currently set hourly, for demo purposes. 
+- **Exploratory Data Analysis (EDA)**: Primarily using Jupyter notebooks and Pandas
+- **Data Cleaning and management**:Data is converted and stored as SQL, using Postgres DBMS
+- **Data pre-processing**: Python functions and classes that manage data pre-processing pipeline
+- **Modeling**: A binary-classifier neural network with Keras Sequential
+- **Experiment Tracking and Model Registry** Model performance and registry is tracked using MlFlow
+- **User interface (UI)**: Flask and Plotly-Dash-Table
+- **Data storage** the data files are stored on Git LFS
+- **Automation** using Github Actions workflow, triggered on a schedule. Currently set to daily
 
 ## Use Case, storyline and details: 
-This project uses the IBM Credit Card Fraud Transactions Dataset, which contains 6 years of transactions with the labels Fraud or not_fraud. Data for 4 years has been used for the project, starting 1.1.2017, due to the size of the file.
-The model is initially trained until 31.12.2018, and retrains through the workflow on additional monthly data.
+This project uses the IBM Credit Card Fraud Transactions Dataset, which contains 6 years of transactions with the labels Fraud or not_fraud. 4 years of data are used in the project, starting 1.1.2017, due to the size of the file.
+The model is initially trained until 31.12.2018, and retrains on additional monthly data.
 
-The UI includes viewing rights for two predefined users. The user credentials for the predictions-view are available only in the Project Presentation that was submitted. 
+The UI includes viewing rights for two predefined users. The user credentials for the predictions-view are available only in the Project Presentation File that was submitted. 
 
 
 ## Usage Instructions:
 1. Install Docker
 2. Install git-lfs 
-3. create a project folder in the desired location. for example: mkdir ******
-4. clone the repo: *******link********* (pay attention: the repo is relatively large)
-5. Inside the project main directory, pull the init.sql file using git-lfs: `git lfs pull`
+3. create a project folder in the desired location. for example: mkdir m2p_project
+4. clone the repo: `git clone https://github.com/triggertiger/Model2Production.git' 
+5. move into the project root directory
+6. pull the data file `init_db.sql` file, using git-lfs: `git lfs pull`
 6. Pull the images from Docker hub:
-    a. `docker pull triggertiger/model_production:postgres` (might be that 'sudo' is required in case that permission is denied)
     b. `docker pull triggertiger/model_production:latest`
+    a. `docker pull triggertiger/model_production:postgres` 
+    (notice that `sudo` may be required in case that permission is denied)
 7. Run: `docker compose -f docker-compose.yml up`
-8. In the first run, building the database might take several minutes.
+8. In the first run, building the database might take several seconds. There is a sleep function in place, to assist the build, but in case it is still returning an error, please give it a second run.
 9. The app is running on localhost, on port 8080. Go to http://127.0.0.1:8080 in your browser, follow the screens and view the predictions. 
 
 ## Reproduction: 
