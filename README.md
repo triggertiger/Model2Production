@@ -40,8 +40,14 @@ The UI includes viewing rights for two predefined users. The user credentials fo
     a. `docker pull triggertiger/model_production:postgres` 
     (notice that `sudo` may be required in case that permission is denied)
 7. Run: `docker compose -f docker-compose.yml up`
-8. In the first run, building the database might take several seconds. There is a sleep function in place, to assist the build, but in case it is still returning an error, please give it a second run.
+8. In the first run, building the database might take several seconds. In case it is returning an error, please give it a second run, by running:
+`ctrl + c`, then `docker compose down` followed by `docker compose -f docker-compose.yml up`.
 9. The app is running on localhost, on port 8080. Go to http://127.0.0.1:8080 in your browser, follow the screens and view the predictions. 
+10. On finish: `ctrl + c`, then `docker compose down`.
+11. For every subsequent run, both lines should be executed, to make sure you have the latest version:
+    a. `docker pull triggertiger/model_production:latest`
+    b. `docker pull triggertiger/model_production:postgres`
+    c. `docker compose -f docker-compose.yml up`
 
 ## Reproduction: 
 
